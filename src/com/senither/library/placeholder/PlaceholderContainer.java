@@ -15,22 +15,19 @@ public class PlaceholderContainer
     private final Plugin plugin;
 
     /**
-     * Represents our placeholder string value, this
-     * will be used as a key in the network packet
-     * that will be sent to the lobbies.
+     * Represents our placeholder string key.
      *
      * @var String placeholder
      */
     private final String placeholder;
 
     /**
-     * Represents our placeholder value, this will be
-     * called on the update method, the value of
-     * callback will be used as the value for
-     * the network packet that will be sent
-     * to the lobbies.
+     * Represents our placeholder callback, this will be
+     * called on the update method, the value of the
+     * callback will be used as the value for the
+     * formating method to format messages.
      *
-     * @var PlaceholderDataset callback
+     * @var Placeholder callback
      */
     private final Placeholder callback;
 
