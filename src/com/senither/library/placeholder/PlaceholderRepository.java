@@ -42,13 +42,19 @@ public class PlaceholderRepository
 
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (str.contains(placeholder.toString())) {
+                String callback = null;
+
                 switch (placeholder.getType()) {
                     case GLOBAL:
-                        str = ((GlobalPlaceholder) placeholder.getCallback()).run();
+                        callback = ((GlobalPlaceholder) placeholder.getCallback()).run();
                         break;
 
                     case PLAYER:
-                        str = ((PlayerPlaceholder) placeholder.getCallback()).run(player);
+                        callback = ((PlayerPlaceholder) placeholder.getCallback()).run(player);
+                }
+
+                if (callback != null) {
+                    str = str.replace(placeholder.getPlaceholder(), callback);
                 }
             }
         }
@@ -64,10 +70,16 @@ public class PlaceholderRepository
             }
 
             if (str.contains(placeholder.toString())) {
+                String callback = null;
+
                 switch (placeholder.getType()) {
                     case GLOBAL:
                         str = ((GlobalPlaceholder) placeholder.getCallback()).run();
                         break;
+                }
+
+                if (callback != null) {
+                    str = str.replace(placeholder.getPlaceholder(), callback);
                 }
             }
         }
