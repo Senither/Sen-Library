@@ -3,6 +3,8 @@ package com.senither.library;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.placeholder.PlaceholderRepository;
+import com.senither.library.placeholder.contracts.GlobalPlaceholder;
+import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -144,13 +146,13 @@ public final class SenLibrary
     private void setupDefaultPlaceholders()
     {
         // Name placeholders
-        getPlaceholderRepository().push(plugin, "player", (Player player) -> (player != null) ? player.getName() : "Player");
-        getPlaceholderRepository().push(plugin, "playerDisplay", (Player player) -> (player != null) ? player.getDisplayName() : "Player");
-        getPlaceholderRepository().push(plugin, "world", (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+        getPlaceholderRepository().push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
+        getPlaceholderRepository().push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
+        getPlaceholderRepository().push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
 
         // Player propertie placeholders
-        getPlaceholderRepository().push(plugin, "level", (Player player) -> (player != null) ? "" + player.getLevel() : "0");
-        getPlaceholderRepository().push(plugin, "health", (Player player) -> (player != null) ? "" + player.getHealth() : "0");
-        getPlaceholderRepository().push(plugin, "food", (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+        getPlaceholderRepository().push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
+        getPlaceholderRepository().push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
+        getPlaceholderRepository().push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
     }
 }

@@ -1,6 +1,6 @@
 package com.senither.library.placeholder;
 
-import org.bukkit.entity.Player;
+import com.senither.library.placeholder.contracts.Placeholder;
 import org.bukkit.plugin.Plugin;
 
 public class PlaceholderContainer
@@ -31,11 +31,15 @@ public class PlaceholderContainer
      */
     private final Placeholder callback;
 
+    private final PlaceholderType type;
+
     public PlaceholderContainer(Plugin plugin, String placeholder, Placeholder callback)
     {
         this.plugin = plugin;
         this.placeholder = "{" + placeholder + "}";
         this.callback = callback;
+
+        this.type = PlaceholderType.frominstance(callback);
     }
 
     /**
@@ -68,19 +72,9 @@ public class PlaceholderContainer
         return callback;
     }
 
-    /**
-     * Invokes the callback method if the
-     * registered plugin is enabled.
-     *
-     * @param player
-     * @return String
-     */
-    public String invokeCallback(Player player)
+    public PlaceholderType getType()
     {
-        if (plugin != null && plugin.isEnabled()) {
-            return callback.run(player);
-        }
-        return null;
+        return type;
     }
 
     @Override

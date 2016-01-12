@@ -66,7 +66,7 @@ public class InventoryBuilder
 
     public Inventory build(Player player)
     {
-        String inventoryTitle = library.getPlaceholderRepository().format(title, player);
+        String inventoryTitle = library.getPlaceholderRepository().formatPlayer(title, player);
 
         Inventory inventory = Bukkit.createInventory(null, size, inventoryTitle);
 

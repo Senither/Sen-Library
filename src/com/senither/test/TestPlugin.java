@@ -25,7 +25,7 @@ public class TestPlugin extends JavaPlugin implements Listener
     }
 
     @EventHandler
-    public void onPlayerJoin(AsyncPlayerChatEvent e)
+    public void onPlayerChat(AsyncPlayerChatEvent e)
     {
         Player player = e.getPlayer();
 

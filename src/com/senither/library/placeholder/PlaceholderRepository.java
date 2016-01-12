@@ -1,6 +1,9 @@
 package com.senither.library.placeholder;
 
+import com.senither.library.placeholder.contracts.Placeholder;
 import com.senither.library.SenLibrary;
+import com.senither.library.placeholder.contracts.GlobalPlaceholder;
+import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -31,14 +34,44 @@ public class PlaceholderRepository
         return true;
     }
 
-    public String format(String str, Player player)
+    public String formatPlayer(String str, Player player)
     {
+        if (player == null) {
+            return format(str);
+        }
+
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (str.contains(placeholder.toString())) {
-                str = str.replace(placeholder.toString(), placeholder.invokeCallback(player));
+                switch (placeholder.getType()) {
+                    case GLOBAL:
+                        str = ((GlobalPlaceholder) placeholder.getCallback()).run();
+                        break;
+
+                    case PLAYER:
+                        str = ((PlayerPlaceholder) placeholder.getCallback()).run(player);
+                }
             }
         }
 
         return str;
+    }
+
+    public String format(String str)
+    {
+        for (PlaceholderContainer placeholder : placeholders.values()) {
+            if (placeholder.getType().equals(PlaceholderType.PLAYER)) {
+                continue;
+            }
+
+            if (str.contains(placeholder.toString())) {
+                switch (placeholder.getType()) {
+                    case GLOBAL:
+                        ((GlobalPlaceholder) placeholder.getCallback()).run();
+                        break;
+                }
+            }
+        }
+
+        return null;
     }
 }
