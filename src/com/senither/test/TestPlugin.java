@@ -31,8 +31,7 @@ public class TestPlugin extends JavaPlugin implements Listener
 
         ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
 
-        InventoryBuilder inventory = library.makeInventory(3);
-        inventory.createWall(WallSide.ALL, item, "&8Filler item");
+        InventoryBuilder inventory = library.makeInventory(3, WallSide.ALL, item, "&8Filler item");
 
         inventory.open(player);
     }
