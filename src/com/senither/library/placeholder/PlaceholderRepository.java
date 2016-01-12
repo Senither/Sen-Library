@@ -66,7 +66,7 @@ public class PlaceholderRepository
             if (str.contains(placeholder.toString())) {
                 switch (placeholder.getType()) {
                     case GLOBAL:
-                        ((GlobalPlaceholder) placeholder.getCallback()).run();
+                        str = ((GlobalPlaceholder) placeholder.getCallback()).run();
                         break;
                 }
             }
