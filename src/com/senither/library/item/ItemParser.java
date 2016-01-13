@@ -1,9 +1,10 @@
 package com.senither.library.item;
 
 import com.senither.library.SenLibrary;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -22,15 +23,36 @@ public class ItemParser
      *
      * @param item The item that should be edited.
      * @param name The name the item should have.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(ItemStack item, String name)
     {
-        if (name != null) {
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(library.getChat().colorize(name));
-            item.setItemMeta(meta);
-        }
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(library.getChat().colorize(name));
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    /**
+     * Gives the ItemStack object the given display name.
+     *
+     * @param item         The item that should be edited.
+     * @param name         The name the item should have.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(ItemStack item, String name, HashMap<Enchantment, Integer> enchantments)
+    {
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(library.getChat().colorize(name));
+
+        item.setItemMeta(meta);
+
+        item.addUnsafeEnchantments(enchantments);
 
         return item;
     }
@@ -41,21 +63,40 @@ public class ItemParser
      * @param item The item that should be edited.
      * @param name The name the item should have.
      * @param lore The list of messages that should be used for the lore.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(ItemStack item, String name, List<String> lore)
     {
         ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(library.getChat().colorize(name));
-
-        List<String> placeholder = new ArrayList<>();
-        lore.stream().forEach((line) -> {
-            placeholder.add(library.getChat().colorize(line));
-        });
-        meta.setLore(placeholder);
+        meta.setLore(library.getChat().colorize(lore));
 
         item.setItemMeta(meta);
+
+        return item;
+    }
+
+    /**
+     * Gives the ItemStack object the given display name and lore.
+     *
+     * @param item         The item that should be edited.
+     * @param name         The name the item should have.
+     * @param lore         The list of messages that should be used for the lore.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(ItemStack item, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
+    {
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(library.getChat().colorize(name));
+        meta.setLore(library.getChat().colorize(lore));
+
+        item.setItemMeta(meta);
+
+        item.addUnsafeEnchantments(enchantments);
+
         return item;
     }
 
@@ -64,13 +105,24 @@ public class ItemParser
      *
      * @param material The item material that should be used.
      * @param name     The name of the item that should be created.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(Material material, String name)
     {
-        ItemStack item = new ItemStack(material, 1);
+        return make(new ItemStack(material, 1), name);
+    }
 
-        return make(item, name);
+    /**
+     * Creates a new ItemStack object with the given name.
+     *
+     * @param material     The item material that should be used.
+     * @param name         The name of the item that should be created.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(Material material, String name, HashMap<Enchantment, Integer> enchantments)
+    {
+        return make(new ItemStack(material, 1), name, enchantments);
     }
 
     /**
@@ -79,13 +131,25 @@ public class ItemParser
      * @param material The item material that should be used.
      * @param data     The item data(damage) that should be parsed.
      * @param name     The name of the item that should be created.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(Material material, short data, String name)
     {
-        ItemStack item = new ItemStack(material, 1, data);
+        return make(new ItemStack(material, 1, data), name);
+    }
 
-        return make(item, name);
+    /**
+     * Creates a new ItemStack object with the given name.
+     *
+     * @param material     The item material that should be used.
+     * @param data         The item data(damage) that should be parsed.
+     * @param name         The name of the item that should be created.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(Material material, short data, String name, HashMap<Enchantment, Integer> enchantments)
+    {
+        return make(new ItemStack(material, 1, data), name);
     }
 
     /**
@@ -95,13 +159,26 @@ public class ItemParser
      * @param material The item material that should be used.
      * @param name     The name the item should have.
      * @param lore     The list of messages that should be used for the lore.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(Material material, String name, List<String> lore)
     {
-        ItemStack item = new ItemStack(material, 1);
+        return make(new ItemStack(material, 1), name, lore);
+    }
 
-        return make(item, name, lore);
+    /**
+     *
+     * Creates a new ItemStack object with the given name and lore.
+     *
+     * @param material     The item material that should be used.
+     * @param name         The name the item should have.
+     * @param lore         The list of messages that should be used for the lore.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(Material material, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
+    {
+        return make(new ItemStack(material, 1), name, lore);
     }
 
     /**
@@ -111,12 +188,25 @@ public class ItemParser
      * @param data     The item data(damage) that should be parsed.
      * @param name     The name the item should have.
      * @param lore     The list of messages that should be used for the lore.
-     * @return
+     * @return ItemStack
      */
     public ItemStack make(Material material, short data, String name, List<String> lore)
     {
-        ItemStack item = new ItemStack(material, 1, data);
+        return make(new ItemStack(material, 1, data), name, lore);
+    }
 
-        return make(item, name, lore);
+    /**
+     * Creates a new ItemStack object with the given name and lore.
+     *
+     * @param material     The item material that should be used.
+     * @param data         The item data(damage) that should be parsed.
+     * @param name         The name the item should have.
+     * @param lore         The list of messages that should be used for the lore.
+     * @param enchantments The list of enchants that should be applied to the ItemStack.
+     * @return ItemStack
+     */
+    public ItemStack make(Material material, short data, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
+    {
+        return make(new ItemStack(material, 1, data), name, lore);
     }
 }
