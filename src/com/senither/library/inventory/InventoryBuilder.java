@@ -1,7 +1,7 @@
 package com.senither.library.inventory;
 
 import com.senither.library.SenLibrary;
-import com.senither.library.item.ItemBuilder;
+import com.senither.library.item.ItemParser;
 import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ public class InventoryBuilder
     private String title;
     private final int size;
     private final HashMap<Integer, ItemStack> items;
-    private final ItemBuilder builder;
+    private final ItemParser builder;
 
     public InventoryBuilder(SenLibrary library, int rows)
     {
@@ -32,7 +32,7 @@ public class InventoryBuilder
         this.title = library.getChat().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
-        builder = new ItemBuilder(library);
+        builder = new ItemParser(library);
     }
 
     public InventoryBuilder(SenLibrary library, int rows, String title)
@@ -47,7 +47,7 @@ public class InventoryBuilder
         this.title = library.getChat().colorize(title);
 
         items = new HashMap<>();
-        builder = new ItemBuilder(library);
+        builder = new ItemParser(library);
     }
 
     public Inventory build()

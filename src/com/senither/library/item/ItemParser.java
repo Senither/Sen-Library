@@ -7,12 +7,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemBuilder
+public class ItemParser
 {
 
     private final SenLibrary library;
 
-    public ItemBuilder(SenLibrary library)
+    public ItemParser(SenLibrary library)
     {
         this.library = library;
     }
