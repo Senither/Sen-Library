@@ -18,7 +18,7 @@ public class InventoryBuilder
     private String title;
     private final int size;
     private final HashMap<Integer, ItemStack> items;
-    private final ItemParser builder;
+    private final ItemParser parser;
 
     public InventoryBuilder(SenLibrary library, int rows)
     {
@@ -32,7 +32,7 @@ public class InventoryBuilder
         this.title = library.getChat().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
-        builder = new ItemParser(library);
+        parser = library.makeItemParser();
     }
 
     public InventoryBuilder(SenLibrary library, int rows, String title)
@@ -47,7 +47,7 @@ public class InventoryBuilder
         this.title = library.getChat().colorize(title);
 
         items = new HashMap<>();
-        builder = new ItemParser(library);
+        parser = new ItemParser(library);
     }
 
     public Inventory build()
@@ -121,22 +121,22 @@ public class InventoryBuilder
 
     public InventoryBuilder createLine(int row, ItemStack item, String name)
     {
-        return createLine(row, builder.make(item, name));
+        return createLine(row, parser.make(item, name));
     }
 
     public InventoryBuilder createLine(int row, ItemStack item, String name, List<String> lore)
     {
-        return createLine(row, builder.make(item, name, lore));
+        return createLine(row, parser.make(item, name, lore));
     }
 
     public InventoryBuilder createLine(int row, Material material, String name)
     {
-        return createLine(row, builder.make(material, name));
+        return createLine(row, parser.make(material, name));
     }
 
     public InventoryBuilder createLine(int row, Material material, String name, List<String> lore)
     {
-        return createLine(row, builder.make(material, name, lore));
+        return createLine(row, parser.make(material, name, lore));
     }
 
     public InventoryBuilder createWall(WallSide side, ItemStack item)
@@ -188,22 +188,22 @@ public class InventoryBuilder
 
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name)
     {
-        return createWall(side, builder.make(item, name));
+        return createWall(side, parser.make(item, name));
     }
 
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name, List<String> lore)
     {
-        return createWall(side, builder.make(item, name, lore));
+        return createWall(side, parser.make(item, name, lore));
     }
 
     public InventoryBuilder createWall(WallSide side, Material material, String name)
     {
-        return createWall(side, builder.make(material, name));
+        return createWall(side, parser.make(material, name));
     }
 
     public InventoryBuilder createWall(WallSide side, Material material, String name, List<String> lore)
     {
-        return createWall(side, builder.make(material, name, lore));
+        return createWall(side, parser.make(material, name, lore));
     }
 
     public InventoryBuilder fill(ItemStack item)
@@ -216,11 +216,11 @@ public class InventoryBuilder
 
     public InventoryBuilder fill(ItemStack item, String name)
     {
-        return fill(builder.make(item, name));
+        return fill(parser.make(item, name));
     }
 
     public InventoryBuilder fill(ItemStack item, String name, List<String> lore)
     {
-        return fill(builder.make(item, name, lore));
+        return fill(parser.make(item, name, lore));
     }
 }

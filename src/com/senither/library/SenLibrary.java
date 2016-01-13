@@ -3,6 +3,7 @@ package com.senither.library;
 import com.senither.library.chat.ChatFormatter;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
+import com.senither.library.item.ItemParser;
 import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import org.bukkit.entity.Player;
@@ -34,6 +35,14 @@ public final class SenLibrary
      * @var PlaceholderRepository
      */
     private final ChatFormatter chat;
+
+    /**
+     * The item parser instance, allowing you
+     * to create new items a lot easier.
+     *
+     * @var ItemParser
+     */
+    private ItemParser itemParser;
 
     public SenLibrary(Plugin plugin)
     {
@@ -139,6 +148,11 @@ public final class SenLibrary
         InventoryBuilder inventory = new InventoryBuilder(this, rows, title);
 
         return inventory.createWall(side, item, itemTitle);
+    }
+
+    public ItemParser makeItemParser()
+    {
+        return (itemParser == null) ? itemParser = new ItemParser(this) : itemParser;
     }
 
     public PlaceholderRepository getPlaceholder()
