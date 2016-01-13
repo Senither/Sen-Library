@@ -5,7 +5,6 @@ import com.senither.library.item.ItemBuilder;
 import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,10 +29,10 @@ public class InventoryBuilder
 
         size = rows * 9;
 
-        this.title = colorize("&9{player}'s Inventory");
+        this.title = library.getChat().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
-        builder = new ItemBuilder();
+        builder = new ItemBuilder(library);
     }
 
     public InventoryBuilder(SenLibrary library, int rows, String title)
@@ -45,10 +44,10 @@ public class InventoryBuilder
 
         size = rows * 9;
 
-        this.title = colorize(title);
+        this.title = library.getChat().colorize(title);
 
         items = new HashMap<>();
-        builder = new ItemBuilder();
+        builder = new ItemBuilder(library);
     }
 
     public Inventory build()
@@ -66,7 +65,7 @@ public class InventoryBuilder
 
     public Inventory build(Player player)
     {
-        String inventoryTitle = library.getPlaceholderRepository().formatPlayer(title, player);
+        String inventoryTitle = library.getPlaceholder().formatPlayer(title, player);
 
         Inventory inventory = Bukkit.createInventory(null, size, inventoryTitle);
 
@@ -86,7 +85,7 @@ public class InventoryBuilder
 
     public InventoryBuilder setTitle(String title)
     {
-        this.title = colorize(title);
+        this.title = library.getChat().colorize(title);
 
         return this;
     }
@@ -223,10 +222,5 @@ public class InventoryBuilder
     public InventoryBuilder fill(ItemStack item, String name, List<String> lore)
     {
         return fill(builder.make(item, name, lore));
-    }
-
-    private String colorize(String str)
-    {
-        return ChatColor.translateAlternateColorCodes('&', str);
     }
 }

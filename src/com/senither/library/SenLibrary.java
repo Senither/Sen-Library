@@ -1,9 +1,9 @@
 package com.senither.library;
 
+import com.senither.library.chat.ChatFormatter;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.placeholder.PlaceholderRepository;
-import com.senither.library.placeholder.contracts.GlobalPlaceholder;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,11 +28,19 @@ public final class SenLibrary
      */
     private final PlaceholderRepository placeholders;
 
+    /**
+     * The placeholder repository instance.
+     *
+     * @var PlaceholderRepository
+     */
+    private final ChatFormatter chat;
+
     public SenLibrary(Plugin plugin)
     {
         this.plugin = plugin;
 
         this.placeholders = new PlaceholderRepository(this);
+        this.chat = new ChatFormatter(this);
 
         this.setupDefaultPlaceholders();
     }
@@ -133,9 +141,19 @@ public final class SenLibrary
         return inventory.createWall(side, item, itemTitle);
     }
 
-    public PlaceholderRepository getPlaceholderRepository()
+    public PlaceholderRepository getPlaceholder()
     {
         return placeholders;
+    }
+
+    public ChatFormatter getChat()
+    {
+        return chat;
+    }
+
+    public Plugin getPlugin()
+    {
+        return plugin;
     }
 
     /**
@@ -146,13 +164,13 @@ public final class SenLibrary
     private void setupDefaultPlaceholders()
     {
         // Name placeholders
-        getPlaceholderRepository().push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
-        getPlaceholderRepository().push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
-        getPlaceholderRepository().push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+        getPlaceholder().push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
+        getPlaceholder().push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
+        getPlaceholder().push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
 
         // Player propertie placeholders
-        getPlaceholderRepository().push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
-        getPlaceholderRepository().push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
-        getPlaceholderRepository().push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+        getPlaceholder().push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
+        getPlaceholder().push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
+        getPlaceholder().push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
     }
 }

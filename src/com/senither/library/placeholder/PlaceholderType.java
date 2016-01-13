@@ -3,7 +3,6 @@ package com.senither.library.placeholder;
 import com.senither.library.placeholder.contracts.GlobalPlaceholder;
 import com.senither.library.placeholder.contracts.Placeholder;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
-import java.util.Arrays;
 
 public enum PlaceholderType
 {
@@ -48,7 +47,7 @@ public enum PlaceholderType
         return null;
     }
 
-    public static PlaceholderType frominstance(Placeholder instance)
+    public static PlaceholderType fromInstance(Placeholder instance)
     {
         if (instance.getClass().getInterfaces().length == 0) {
             return null;

@@ -31,6 +31,13 @@ public class PlaceholderContainer
      */
     private final Placeholder callback;
 
+    /**
+     * Represents our placeholder type, this will determine
+     * the run method that is called for the placeholder
+     * when the placeholder is invoked.
+     *
+     * @var PlaceholderType
+     */
     private final PlaceholderType type;
 
     public PlaceholderContainer(Plugin plugin, String placeholder, Placeholder callback)
@@ -39,7 +46,7 @@ public class PlaceholderContainer
         this.placeholder = "{" + placeholder + "}";
         this.callback = callback;
 
-        this.type = PlaceholderType.frominstance(callback);
+        this.type = PlaceholderType.fromInstance(callback);
     }
 
     /**
@@ -72,6 +79,11 @@ public class PlaceholderContainer
         return callback;
     }
 
+    /**
+     * Returns the placeholders type.
+     *
+     * @return PlaceholderType
+     */
     public PlaceholderType getType()
     {
         return type;
