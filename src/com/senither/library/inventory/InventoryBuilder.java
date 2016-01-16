@@ -112,15 +112,12 @@ public class InventoryBuilder
 
     public InventoryBuilder unset(int from, int to)
     {
-        if (from < to) {
-            for (int i = from; i <= to; i++) {
-                unset(i);
-            }
-        } else {
-            for (int i = to; i <= from; i++) {
-                unset(i);
-            }
+        int min = Math.min(from, to), max = Math.max(from, to);
+
+        for (int i = min; i <= max; i++) {
+            unset(i);
         }
+
         return this;
     }
 
@@ -154,9 +151,7 @@ public class InventoryBuilder
 
     public InventoryBuilder createWall(WallSide side, ItemStack item)
     {
-        int index = -1;
-        int multiplier = -1;
-        int timers = -1;
+        int index = -1, multiplier = -1, timers = -1;
 
         switch (side) {
             case ALL:
@@ -165,21 +160,25 @@ public class InventoryBuilder
                 createWall(WallSide.BOTTOM, item);
                 createWall(WallSide.LEFT, item);
                 break;
+
             case TOP:
                 index = 0;
                 multiplier = 1;
                 timers = 9;
                 break;
+
             case RIGHT:
                 index = 8;
                 multiplier = 9;
                 timers = 6;
                 break;
+
             case BOTTOM:
                 index = size - 8;
                 multiplier = 1;
                 timers = 9;
                 break;
+
             case LEFT:
                 index = 0;
                 multiplier = 9;

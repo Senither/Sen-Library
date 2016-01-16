@@ -130,7 +130,6 @@ public final class Configuration
         } catch (IOException ex) {
             plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
         }
-
     }
 
     public void saveDefaultConfig()

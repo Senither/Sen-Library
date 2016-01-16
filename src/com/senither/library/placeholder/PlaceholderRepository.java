@@ -52,7 +52,7 @@ public class PlaceholderRepository
     public String format(String str, Player player)
     {
         if (player == null) {
-            return PlaceholderRepository.this.format(str);
+            return format(str);
         }
 
         for (PlaceholderContainer placeholder : placeholders.values()) {
@@ -99,6 +99,6 @@ public class PlaceholderRepository
             }
         }
 
-        return null;
+        return str;
     }
 }
