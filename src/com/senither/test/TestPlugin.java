@@ -1,6 +1,7 @@
 package com.senither.test;
 
 import com.senither.library.SenLibrary;
+import com.senither.library.config.Configuration;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import org.bukkit.Material;
@@ -20,6 +21,10 @@ public class TestPlugin extends JavaPlugin implements Listener
     public void onEnable()
     {
         library = new SenLibrary(this);
+
+        Configuration config = library.makeConfig("test.yml");
+        config.set("this.is.a.test", true);
+        config.saveConfig();
 
         getServer().getPluginManager().registerEvents(this, this);
     }

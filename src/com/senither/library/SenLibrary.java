@@ -1,14 +1,17 @@
 package com.senither.library;
 
 import com.senither.library.chat.ChatFormatter;
+import com.senither.library.config.Configuration;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.item.ItemParser;
 import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
+import java.io.File;
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SenLibrary
 {
@@ -20,7 +23,7 @@ public final class SenLibrary
      *
      * @var Plugin
      */
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
     /**
      * The placeholder repository instance.
@@ -49,7 +52,7 @@ public final class SenLibrary
      *
      * @param plugin The JavaPlugin class instance.
      */
-    public SenLibrary(Plugin plugin)
+    public SenLibrary(JavaPlugin plugin)
     {
         this.plugin = plugin;
     }
@@ -151,6 +154,51 @@ public final class SenLibrary
     }
 
     /**
+     * Creates a new custom configuration file, allowing you to store and load information
+     * from and to the configuration file, if a file with the configuration name is
+     * found in the main path of your plugin, it will be loaded into memory
+     * and used as the default properties for the configuration.
+     *
+     * @param name The configuration name.
+     * @return Configuration
+     */
+    public Configuration makeConfig(String name)
+    {
+        return new Configuration(this, name);
+    }
+
+    /**
+     * Creates a new custom configuration file, allowing you to store and load information
+     * from and to the configuration file, if a file with the configuration name is
+     * found in the main path of your plugin, it will be loaded into memory
+     * and used as the default properties for the configuration.
+     *
+     * @param folder The folder to store the configuration in.
+     * @param name   The configuration name.
+     * @return Configuration
+     */
+    public Configuration makeConfig(File folder, String name)
+    {
+        return new Configuration(this, folder, name);
+    }
+
+    /**
+     * Creates a new custom configuration file, allowing you to store and load information
+     * from and to the configuration file, if a file with the configuration name is
+     * found in the main path of your plugin, it will be loaded into memory
+     * and used as the default properties for the configuration.
+     *
+     * @param folder     The folder to store the configuration in.
+     * @param name       The configuration name.
+     * @param defaultYml The default yml that will be written to the configuration.
+     * @return Configuration
+     */
+    public Configuration makeConfig(File folder, String name, List<String> defaultYml)
+    {
+        return new Configuration(this, folder, name, defaultYml);
+    }
+
+    /**
      * Returns the item parser instance, allowing you
      * to create and modify item stacks easier.
      *
@@ -202,9 +250,9 @@ public final class SenLibrary
      * Returns the plugin instance that was parsed
      * to the Sen Library to setup its instance.
      *
-     * @return Plugin
+     * @return JavaPlugin
      */
-    public Plugin getPlugin()
+    public JavaPlugin getPlugin()
     {
         return plugin;
     }
