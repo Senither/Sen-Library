@@ -10,14 +10,14 @@ public class PlaceholderContainer
      * Represents our plugin instance that the
      * placeholder was registered to.
      *
-     * @var Plugin plugin
+     * @var Plugin
      */
     private final Plugin plugin;
 
     /**
      * Represents our placeholder string key.
      *
-     * @var String placeholder
+     * @var String
      */
     private final String placeholder;
 
@@ -27,7 +27,7 @@ public class PlaceholderContainer
      * callback will be used as the value for the
      * formating method to format messages.
      *
-     * @var Placeholder callback
+     * @var Placeholder
      */
     private final Placeholder callback;
 
@@ -40,6 +40,13 @@ public class PlaceholderContainer
      */
     private final PlaceholderType type;
 
+    /**
+     * Creates a Placeholder Container instance.
+     *
+     * @param plugin      The plugin that registered the placeholder.
+     * @param placeholder The placeholder that was registered.
+     * @param callback    The placeholder callback.
+     */
     public PlaceholderContainer(Plugin plugin, String placeholder, Placeholder callback)
     {
         this.plugin = plugin;
@@ -89,6 +96,13 @@ public class PlaceholderContainer
         return type;
     }
 
+    /**
+     * Casts the entire Placeholder Container
+     * object into a string, containing the
+     * placeholders replaceable value.
+     *
+     * @return String
+     */
     @Override
     public String toString()
     {

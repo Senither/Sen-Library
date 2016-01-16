@@ -53,10 +53,10 @@ public enum PlaceholderType
             return null;
         }
 
-        Class placeholderInterface = instance.getClass().getInterfaces()[0];
+        String placeholderPackageName = instance.getClass().getInterfaces()[0].getName();
 
         for (PlaceholderType type : values()) {
-            if (placeholderInterface.getName().equalsIgnoreCase(type.getInstance().getName())) {
+            if (placeholderPackageName.equalsIgnoreCase(type.getInstance().getName())) {
                 return type;
             }
         }

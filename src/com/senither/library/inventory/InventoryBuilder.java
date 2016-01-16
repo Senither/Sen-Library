@@ -13,13 +13,52 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryBuilder
 {
 
+    /**
+     * Represents our Sen Library instance, this is
+     * used to call other parts of the library.
+     *
+     * @var SenLibrary
+     */
     private final SenLibrary library;
 
+    /**
+     * The inventory title, when the inventory is build the title
+     * will be ran through the placeholder repository to
+     * replace any placeholders in the title.
+     *
+     * @var String
+     */
     private String title;
+
+    /**
+     * The size of the inventory, this determines how
+     * many item slots the inventory will have.
+     *
+     * @var Integer
+     */
     private final int size;
+
+    /**
+     * The list of items to use when building the inventory.
+     *
+     * @var HashMap
+     */
     private final HashMap<Integer, ItemStack> items;
+
+    /**
+     * The item parser, used for creating or adding
+     * items to the inventory a lot easier.
+     *
+     * @var ItemParser
+     */
     private final ItemParser parser;
 
+    /**
+     * Creates a new inventory builder instance.
+     *
+     * @param library The sen library instance.
+     * @param rows    The The amount of rows the inventory should have.
+     */
     public InventoryBuilder(SenLibrary library, int rows)
     {
         this.library = library;
@@ -32,9 +71,16 @@ public class InventoryBuilder
         this.title = library.getChat().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
-        parser = library.makeItemParser();
+        parser = library.getItemParser();
     }
 
+    /**
+     * Creates a new inventory builder instance.
+     *
+     * @param library The sen library instance.
+     * @param rows    The amount of rows the inventory should have.
+     * @param title   The title the inventory should have.
+     */
     public InventoryBuilder(SenLibrary library, int rows, String title)
     {
         this.library = library;
@@ -48,39 +94,6 @@ public class InventoryBuilder
 
         items = new HashMap<>();
         parser = new ItemParser(library);
-    }
-
-    public Inventory build()
-    {
-        Inventory inventory = Bukkit.createInventory(null, size, title);
-
-        for (int i = 0; i < size; i++) {
-            if (items.containsKey(i) && items.get(i) != null) {
-                inventory.setItem(i, items.get(i));
-            }
-        }
-
-        return inventory;
-    }
-
-    public Inventory build(Player player)
-    {
-        String inventoryTitle = library.getPlaceholder().formatPlayer(title, player);
-
-        Inventory inventory = Bukkit.createInventory(null, size, inventoryTitle);
-
-        for (int i = 0; i < size; i++) {
-            if (items.containsKey(i) && items.get(i) != null) {
-                inventory.setItem(i, items.get(i));
-            }
-        }
-
-        return inventory;
-    }
-
-    public void open(Player player)
-    {
-        player.openInventory(build(player));
     }
 
     public InventoryBuilder setTitle(String title)
@@ -121,12 +134,12 @@ public class InventoryBuilder
 
     public InventoryBuilder createLine(int row, ItemStack item, String name)
     {
-        return createLine(row, parser.make(item, name));
+        return createLine(row, parser.parse(item, name));
     }
 
     public InventoryBuilder createLine(int row, ItemStack item, String name, List<String> lore)
     {
-        return createLine(row, parser.make(item, name, lore));
+        return createLine(row, parser.parse(item, name, lore));
     }
 
     public InventoryBuilder createLine(int row, Material material, String name)
@@ -188,12 +201,12 @@ public class InventoryBuilder
 
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name)
     {
-        return createWall(side, parser.make(item, name));
+        return createWall(side, parser.parse(item, name));
     }
 
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name, List<String> lore)
     {
-        return createWall(side, parser.make(item, name, lore));
+        return createWall(side, parser.parse(item, name, lore));
     }
 
     public InventoryBuilder createWall(WallSide side, Material material, String name)
@@ -216,11 +229,65 @@ public class InventoryBuilder
 
     public InventoryBuilder fill(ItemStack item, String name)
     {
-        return fill(parser.make(item, name));
+        return fill(parser.parse(item, name));
     }
 
     public InventoryBuilder fill(ItemStack item, String name, List<String> lore)
     {
-        return fill(parser.make(item, name, lore));
+        return fill(parser.parse(item, name, lore));
+    }
+
+    /**
+     * Builds and opens the inventory for the given player.
+     *
+     * @param player The player to open the inventory for.
+     */
+    public void open(Player player)
+    {
+        player.openInventory(build(player));
+    }
+
+    /**
+     * Builds the inventory with non-player placeholders replacements.
+     *
+     * @return Inventory
+     */
+    public Inventory build()
+    {
+        String inventoryTitle = library.getPlaceholder().format(title);
+
+        return buildInventory(inventoryTitle);
+    }
+
+    /**
+     * Builds the inventory with all the placeholder replacements.
+     *
+     * @param player The player to build the inventory for.
+     * @return Inventory
+     */
+    public Inventory build(Player player)
+    {
+        String inventoryTitle = library.getPlaceholder().format(title, player);
+
+        return buildInventory(inventoryTitle);
+    }
+
+    /**
+     * Builds the inventory with the given title.
+     *
+     * @param name The inventory title
+     * @return Inventory
+     */
+    private Inventory buildInventory(String name)
+    {
+        Inventory inventory = Bukkit.createInventory(null, size, name);
+
+        for (int i = 0; i < size; i++) {
+            if (items.containsKey(i) && items.get(i) != null) {
+                inventory.setItem(i, items.get(i));
+            }
+        }
+
+        return inventory;
     }
 }

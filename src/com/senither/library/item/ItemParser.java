@@ -11,8 +11,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemParser
 {
 
+    /**
+     * Represents our Sen Library instance, this is
+     * used to call other parts of the library.
+     *
+     * @var SenLibrary
+     */
     private final SenLibrary library;
 
+    /**
+     * Creates a new Item Parser instance.
+     *
+     * @param library
+     */
     public ItemParser(SenLibrary library)
     {
         this.library = library;
@@ -25,7 +36,7 @@ public class ItemParser
      * @param name The name the item should have.
      * @return ItemStack
      */
-    public ItemStack make(ItemStack item, String name)
+    public ItemStack parse(ItemStack item, String name)
     {
         ItemMeta meta = item.getItemMeta();
 
@@ -44,7 +55,7 @@ public class ItemParser
      * @param enchantments The list of enchants that should be applied to the ItemStack.
      * @return ItemStack
      */
-    public ItemStack make(ItemStack item, String name, HashMap<Enchantment, Integer> enchantments)
+    public ItemStack parse(ItemStack item, String name, HashMap<Enchantment, Integer> enchantments)
     {
         ItemMeta meta = item.getItemMeta();
 
@@ -65,7 +76,7 @@ public class ItemParser
      * @param lore The list of messages that should be used for the lore.
      * @return ItemStack
      */
-    public ItemStack make(ItemStack item, String name, List<String> lore)
+    public ItemStack parse(ItemStack item, String name, List<String> lore)
     {
         ItemMeta meta = item.getItemMeta();
 
@@ -86,7 +97,7 @@ public class ItemParser
      * @param enchantments The list of enchants that should be applied to the ItemStack.
      * @return ItemStack
      */
-    public ItemStack make(ItemStack item, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
+    public ItemStack parse(ItemStack item, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
     {
         ItemMeta meta = item.getItemMeta();
 
@@ -109,7 +120,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, String name)
     {
-        return make(new ItemStack(material, 1), name);
+        return parse(new ItemStack(material, 1), name);
     }
 
     /**
@@ -122,7 +133,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, String name, HashMap<Enchantment, Integer> enchantments)
     {
-        return make(new ItemStack(material, 1), name, enchantments);
+        return parse(new ItemStack(material, 1), name, enchantments);
     }
 
     /**
@@ -135,7 +146,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, short data, String name)
     {
-        return make(new ItemStack(material, 1, data), name);
+        return parse(new ItemStack(material, 1, data), name);
     }
 
     /**
@@ -149,7 +160,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, short data, String name, HashMap<Enchantment, Integer> enchantments)
     {
-        return make(new ItemStack(material, 1, data), name);
+        return parse(new ItemStack(material, 1, data), name);
     }
 
     /**
@@ -163,7 +174,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, String name, List<String> lore)
     {
-        return make(new ItemStack(material, 1), name, lore);
+        return parse(new ItemStack(material, 1), name, lore);
     }
 
     /**
@@ -178,7 +189,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
     {
-        return make(new ItemStack(material, 1), name, lore);
+        return parse(new ItemStack(material, 1), name, lore);
     }
 
     /**
@@ -192,7 +203,7 @@ public class ItemParser
      */
     public ItemStack make(Material material, short data, String name, List<String> lore)
     {
-        return make(new ItemStack(material, 1, data), name, lore);
+        return parse(new ItemStack(material, 1, data), name, lore);
     }
 
     /**
@@ -207,6 +218,6 @@ public class ItemParser
      */
     public ItemStack make(Material material, short data, String name, List<String> lore, HashMap<Enchantment, Integer> enchantments)
     {
-        return make(new ItemStack(material, 1, data), name, lore);
+        return parse(new ItemStack(material, 1, data), name, lore);
     }
 }

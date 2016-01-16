@@ -10,8 +10,19 @@ import org.bukkit.entity.Player;
 public class ChatFormatter
 {
 
+    /**
+     * Represents our Sen Library instance, this is
+     * used to call other parts of the library.
+     *
+     * @var SenLibrary
+     */
     private final SenLibrary library;
 
+    /**
+     * Creates a new chat formatter instance.
+     *
+     * @param library
+     */
     public ChatFormatter(SenLibrary library)
     {
         this.library = library;
@@ -162,5 +173,4 @@ public class ChatFormatter
             }
         }
     }
-
 }

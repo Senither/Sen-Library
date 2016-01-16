@@ -11,7 +11,22 @@ import org.bukkit.plugin.Plugin;
 public class PlaceholderRepository
 {
 
+    /**
+     * Represents our Sen Library instance, this is
+     * used to call other parts of the library.
+     *
+     * @var SenLibrary
+     */
     private final SenLibrary library;
+
+    /**
+     * Represents our list of placeholders, the placeholder
+     * itself will act as the key and the callback, type
+     * and any other relevant information will be
+     * stored in the Placeholder Container.
+     *
+     * @var HashMap
+     */
     private final HashMap<String, PlaceholderContainer> placeholders;
 
     public PlaceholderRepository(SenLibrary library)
@@ -34,10 +49,10 @@ public class PlaceholderRepository
         return true;
     }
 
-    public String formatPlayer(String str, Player player)
+    public String format(String str, Player player)
     {
         if (player == null) {
-            return format(str);
+            return PlaceholderRepository.this.format(str);
         }
 
         for (PlaceholderContainer placeholder : placeholders.values()) {

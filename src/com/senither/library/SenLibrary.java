@@ -27,14 +27,14 @@ public final class SenLibrary
      *
      * @var PlaceholderRepository
      */
-    private final PlaceholderRepository placeholders;
+    private PlaceholderRepository placeholders;
 
     /**
      * The placeholder repository instance.
      *
      * @var PlaceholderRepository
      */
-    private final ChatFormatter chat;
+    private ChatFormatter chat;
 
     /**
      * The item parser instance, allowing you
@@ -44,14 +44,14 @@ public final class SenLibrary
      */
     private ItemParser itemParser;
 
+    /**
+     * Creates a new SenLibrary instance.
+     *
+     * @param plugin The JavaPlugin class instance.
+     */
     public SenLibrary(Plugin plugin)
     {
         this.plugin = plugin;
-
-        this.placeholders = new PlaceholderRepository(this);
-        this.chat = new ChatFormatter(this);
-
-        this.setupDefaultPlaceholders();
     }
 
     /**
@@ -150,41 +150,62 @@ public final class SenLibrary
         return inventory.createWall(side, item, itemTitle);
     }
 
-    public ItemParser makeItemParser()
+    /**
+     * Returns the item parser instance, allowing you
+     * to create and modify item stacks easier.
+     *
+     * @return ItemParser
+     */
+    public ItemParser getItemParser()
     {
         return (itemParser == null) ? itemParser = new ItemParser(this) : itemParser;
     }
 
+    /**
+     * Returns the placeholder repository, allowing you to format messages
+     * using placeholders with actually values, as-well as pushing
+     * custom placeholders into the repository.
+     *
+     * @return PlaceholderRepository
+     */
     public PlaceholderRepository getPlaceholder()
     {
+        if (placeholders == null) {
+            placeholders = new PlaceholderRepository(this);
+
+            // Name placeholders
+            placeholders.push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
+            placeholders.push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
+            placeholders.push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+
+            // Player propertie placeholders
+            placeholders.push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
+            placeholders.push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
+            placeholders.push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+        }
+
         return placeholders;
     }
 
+    /**
+     * Returns the chat formatter, allowing you to format
+     * messages, send messages depending on conditions.
+     *
+     * @return ChatFormatter
+     */
     public ChatFormatter getChat()
     {
-        return chat;
-    }
-
-    public Plugin getPlugin()
-    {
-        return plugin;
+        return (chat == null) ? chat = new ChatFormatter(this) : chat;
     }
 
     /**
-     * Registers all the default placeholders, allowing
-     * you to use the formating method to replace
-     * the placeholders with actually values.
+     * Returns the plugin instance that was parsed
+     * to the Sen Library to setup its instance.
+     *
+     * @return Plugin
      */
-    private void setupDefaultPlaceholders()
+    public Plugin getPlugin()
     {
-        // Name placeholders
-        getPlaceholder().push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
-        getPlaceholder().push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
-        getPlaceholder().push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
-
-        // Player propertie placeholders
-        getPlaceholder().push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
-        getPlaceholder().push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
-        getPlaceholder().push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+        return plugin;
     }
 }
