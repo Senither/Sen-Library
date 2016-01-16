@@ -2,6 +2,7 @@ package com.senither.library;
 
 import com.senither.library.chat.ChatFormatter;
 import com.senither.library.config.Configuration;
+import com.senither.library.exceptions.InvalidPlaceholderException;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.item.ItemParser;
@@ -9,6 +10,8 @@ import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -221,15 +224,19 @@ public final class SenLibrary
         if (placeholders == null) {
             placeholders = new PlaceholderRepository(this);
 
-            // Name placeholders
-            placeholders.push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
-            placeholders.push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
-            placeholders.push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+            try {
+                // Name placeholders
+                placeholders.push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
+                placeholders.push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
+                placeholders.push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
 
-            // Player propertie placeholders
-            placeholders.push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
-            placeholders.push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
-            placeholders.push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+                // Player propertie placeholders
+                placeholders.push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
+                placeholders.push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
+                placeholders.push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+            } catch (InvalidPlaceholderException ex) {
+                Logger.getLogger(SenLibrary.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return placeholders;

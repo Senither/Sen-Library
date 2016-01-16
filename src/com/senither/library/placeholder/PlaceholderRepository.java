@@ -2,6 +2,7 @@ package com.senither.library.placeholder;
 
 import com.senither.library.placeholder.contracts.Placeholder;
 import com.senither.library.SenLibrary;
+import com.senither.library.exceptions.InvalidPlaceholderException;
 import com.senither.library.placeholder.contracts.GlobalPlaceholder;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import java.util.HashMap;
@@ -36,9 +37,11 @@ public class PlaceholderRepository
         this.placeholders = new HashMap<>();
     }
 
-    public boolean push(Plugin plugin, String placeholder, Placeholder callback)
+    public boolean push(Plugin plugin, String placeholder, Placeholder callback) throws InvalidPlaceholderException
     {
-        placeholder = placeholder.trim();
+        if (!placeholder.matches("([A-Za-z-])\\w+")) {
+            throw new InvalidPlaceholderException("Invalid placeholder given, placeholders can only contain letters and dashes(-)");
+        }
 
         if (placeholders.containsKey(placeholder)) {
             return false;
