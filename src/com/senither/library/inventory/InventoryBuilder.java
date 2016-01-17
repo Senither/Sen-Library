@@ -68,7 +68,7 @@ public class InventoryBuilder
 
         size = rows * 9;
 
-        this.title = library.getChat().colorize("&9{player}'s Inventory");
+        this.title = library.getChatFormatter().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
         parser = library.getItemParser();
@@ -90,7 +90,7 @@ public class InventoryBuilder
 
         size = rows * 9;
 
-        this.title = library.getChat().colorize(title);
+        this.title = library.getChatFormatter().colorize(title);
 
         items = new HashMap<>();
         parser = new ItemParser(library);
@@ -98,7 +98,7 @@ public class InventoryBuilder
 
     public InventoryBuilder setTitle(String title)
     {
-        this.title = library.getChat().colorize(title);
+        this.title = library.getChatFormatter().colorize(title);
 
         return this;
     }

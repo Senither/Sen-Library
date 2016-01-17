@@ -1,3 +1,7 @@
 name: Test-SenLibrary
 main: com.senither.test.TestPlugin
 version: 0.1
+
+commands:
+    inventory:
+        description: Runs the custom inventory builder

@@ -40,7 +40,7 @@ public class ItemParser
     {
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(library.getChat().colorize(name));
+        meta.setDisplayName(library.getChatFormatter().colorize(name));
 
         item.setItemMeta(meta);
 
@@ -59,7 +59,7 @@ public class ItemParser
     {
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(library.getChat().colorize(name));
+        meta.setDisplayName(library.getChatFormatter().colorize(name));
 
         item.setItemMeta(meta);
 
@@ -80,8 +80,8 @@ public class ItemParser
     {
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(library.getChat().colorize(name));
-        meta.setLore(library.getChat().colorize(lore));
+        meta.setDisplayName(library.getChatFormatter().colorize(name));
+        meta.setLore(library.getChatFormatter().colorize(lore));
 
         item.setItemMeta(meta);
 
@@ -101,8 +101,8 @@ public class ItemParser
     {
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(library.getChat().colorize(name));
-        meta.setLore(library.getChat().colorize(lore));
+        meta.setDisplayName(library.getChatFormatter().colorize(name));
+        meta.setLore(library.getChatFormatter().colorize(lore));
 
         item.setItemMeta(meta);
 

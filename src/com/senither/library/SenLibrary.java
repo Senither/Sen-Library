@@ -1,5 +1,6 @@
 package com.senither.library;
 
+import com.senither.library.chat.ChatFilter;
 import com.senither.library.chat.ChatFormatter;
 import com.senither.library.config.Configuration;
 import com.senither.library.exceptions.InvalidPlaceholderException;
@@ -36,11 +37,18 @@ public final class SenLibrary
     private PlaceholderRepository placeholders;
 
     /**
-     * The placeholder repository instance.
+     * The chat formatter instance.
      *
      * @var PlaceholderRepository
      */
-    private ChatFormatter chat;
+    private ChatFormatter chatFormatter;
+
+    /**
+     * The chat filter repository instance.
+     *
+     * @var ChatFilter
+     */
+    private ChatFilter chatFilter;
 
     /**
      * The item parser instance, allowing you
@@ -248,9 +256,21 @@ public final class SenLibrary
      *
      * @return ChatFormatter
      */
-    public ChatFormatter getChat()
+    public ChatFormatter getChatFormatter()
     {
-        return (chat == null) ? chat = new ChatFormatter(this) : chat;
+        return (chatFormatter == null) ? chatFormatter = new ChatFormatter(this) : chatFormatter;
+    }
+
+    /**
+     * Returns the chat filter, allowing you to
+     * add words and rules to the filter, and
+     * as well as format strings.
+     *
+     * @return ChatFilter
+     */
+    public ChatFilter getChatFilter()
+    {
+        return (chatFilter == null) ? chatFilter = new ChatFilter() : chatFilter;
     }
 
     /**
