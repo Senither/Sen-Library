@@ -58,6 +58,10 @@ public class PlaceholderRepository
             return format(str);
         }
 
+        if (!hasPlaceholder(str)) {
+            return str;
+        }
+
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (str.contains(placeholder.toString())) {
                 String callback = null;
@@ -82,6 +86,10 @@ public class PlaceholderRepository
 
     public String format(String str)
     {
+        if (!hasPlaceholder(str)) {
+            return str;
+        }
+
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (placeholder.getType().equals(PlaceholderType.PLAYER)) {
                 continue;
@@ -103,5 +111,10 @@ public class PlaceholderRepository
         }
 
         return str;
+    }
+
+    private boolean hasPlaceholder(String str)
+    {
+        return str.matches("(\\{)+[A-Za-z-]+(\\})");
     }
 }
