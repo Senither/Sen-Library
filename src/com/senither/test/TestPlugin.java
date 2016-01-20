@@ -5,6 +5,8 @@ import com.senither.library.chat.ChatFilterType;
 import com.senither.library.config.Configuration;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
+import com.senither.library.scoreboard.ScoreboardHandler;
+import com.senither.library.scoreboard.ScoreboardPage;
 import java.util.Arrays;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -13,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,5 +61,13 @@ public class TestPlugin extends JavaPlugin implements Listener
     public void onPlayerChat(AsyncPlayerChatEvent e)
     {
         e.setMessage(library.getChatFilter().runFilter(ChatFilterType.ALL, e.getMessage()));
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e)
+    {
+        ScoreboardHandler scoreboard = library.makeScoreboard(e.getPlayer(), 20);
+        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Your Name:", "{player}", "&r&r", "&6Level", "{level}")));
+        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Food:", "{food}", "&r&r", "&6Tealth", "{health}")));
     }
 }

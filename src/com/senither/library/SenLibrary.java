@@ -9,6 +9,8 @@ import com.senither.library.inventory.WallSide;
 import com.senither.library.item.ItemParser;
 import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
+import com.senither.library.scoreboard.ScoreboardFactory;
+import com.senither.library.scoreboard.ScoreboardHandler;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
 
 public final class SenLibrary
 {
@@ -57,6 +60,14 @@ public final class SenLibrary
      * @var ItemParser
      */
     private ItemParser itemParser;
+
+    /**
+     * The scoreboard factory instance allows you to
+     * create new dynamic scoreboard a lot easier.
+     *
+     * @var ScoreboardFactory
+     */
+    private ScoreboardFactory scoreboardFactory;
 
     /**
      * Creates a new SenLibrary instance.
@@ -207,6 +218,99 @@ public final class SenLibrary
     public Configuration makeConfig(File folder, String name, List<String> defaultYml)
     {
         return new Configuration(this, folder, name, defaultYml);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player)
+    {
+        return makeScoreboard(player, DisplaySlot.SIDEBAR, "test", 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, String objective)
+    {
+        return makeScoreboard(player, DisplaySlot.SIDEBAR, objective, 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, int delay)
+    {
+        return makeScoreboard(player, DisplaySlot.SIDEBAR, "test", delay);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, String objective, int delay)
+    {
+        return makeScoreboard(player, DisplaySlot.SIDEBAR, objective, delay);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, String objective)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, int delay)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", delay);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, String objective, int delay)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, delay);
+    }
+
+    //
+    public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot)
+    {
+        return makeScoreboard(player, slot, "test", 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, int delay)
+    {
+        return makeScoreboard(player, slot, "test", delay);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot)
+    {
+        return makeScoreboard(name, slot, "test", 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, int delay)
+    {
+        return makeScoreboard(name, slot, "test", delay);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, String objective)
+    {
+        return makeScoreboard(player, slot, objective, 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, String objective, int delay)
+    {
+        if (scoreboardFactory == null) {
+            scoreboardFactory = new ScoreboardFactory(this);
+        }
+
+        ScoreboardHandler scoreboard = scoreboardFactory.make(player, slot, objective, delay);
+
+        scoreboard.addPlayer(player);
+
+        return scoreboard;
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective)
+    {
+        return makeScoreboard(name, slot, objective, 5);
+    }
+
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective, int delay)
+    {
+        if (scoreboardFactory == null) {
+            scoreboardFactory = new ScoreboardFactory(this);
+        }
+
+        return scoreboardFactory.make(name, slot, objective, delay);
     }
 
     /**
