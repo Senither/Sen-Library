@@ -3,6 +3,9 @@ package com.senither.library;
 import com.senither.library.chat.ChatFilter;
 import com.senither.library.chat.ChatFormatter;
 import com.senither.library.config.Configuration;
+import com.senither.library.database.DatabaseFactory;
+import com.senither.library.database.MySQL;
+import com.senither.library.database.SQLite;
 import com.senither.library.exceptions.InvalidPlaceholderException;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
@@ -68,6 +71,15 @@ public final class SenLibrary
      * @var ScoreboardFactory
      */
     private ScoreboardFactory scoreboardFactory;
+
+    /**
+     * The database factory instance allows you to create
+     * connections to many different database types, and
+     * run queries against them with the query builder.
+     *
+     * @var DatabaseFactory
+     */
+    private DatabaseFactory databaseFactory;
 
     /**
      * Creates a new SenLibrary instance.
@@ -311,6 +323,54 @@ public final class SenLibrary
         }
 
         return scoreboardFactory.make(name, slot, objective, delay);
+    }
+
+    public MySQL connectMySQL(String database, String username, String password)
+    {
+        return connectMySQL("localhost", 3306, database, username, password);
+    }
+
+    public MySQL connectMySQL(int port, String database, String username, String password)
+    {
+        return connectMySQL("localhost", port, database, username, password);
+    }
+
+    public MySQL connectMySQL(String hostname, String database, String username, String password)
+    {
+        return connectMySQL(hostname, 3306, database, username, password);
+    }
+
+    public MySQL connectMySQL(String hostname, int port, String database, String username, String password)
+    {
+        MySQL connection = new MySQL(this, hostname, port, database, username, password);
+
+        return (MySQL) getDatabaseFactory().setConnection(connection);
+    }
+
+    public SQLite connectSQLite()
+    {
+        return new SQLite(this);
+    }
+
+    public SQLite connectSQLite(String directory, String filename)
+    {
+        return connectSQLite(directory, filename, "sqlite");
+    }
+
+    public SQLite connectSQLite(String directory, String filename, String extension)
+    {
+        SQLite connection = new SQLite(this, directory, filename, extension);
+
+        return (SQLite) getDatabaseFactory().setConnection(connection);
+    }
+
+    public DatabaseFactory getDatabaseFactory()
+    {
+        if (databaseFactory == null) {
+            databaseFactory = new DatabaseFactory(this);
+        }
+
+        return databaseFactory;
     }
 
     /**

@@ -3,10 +3,13 @@ package com.senither.test;
 import com.senither.library.SenLibrary;
 import com.senither.library.chat.ChatFilterType;
 import com.senither.library.config.Configuration;
+import com.senither.library.database.MySQL;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.scoreboard.ScoreboardHandler;
 import com.senither.library.scoreboard.ScoreboardPage;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -24,6 +27,8 @@ public class TestPlugin extends JavaPlugin implements Listener
 
     private SenLibrary library;
 
+    private MySQL database;
+
     @Override
     public void onEnable()
     {
@@ -34,6 +39,8 @@ public class TestPlugin extends JavaPlugin implements Listener
         Configuration config = library.makeConfig("test.yml");
         config.set("this.is.a.test", true);
         config.saveConfig();
+
+        database = library.connectMySQL("localhost", "minecraft", "username", "secret");
 
         getServer().getPluginManager().registerEvents(this, this);
     }
@@ -64,10 +71,16 @@ public class TestPlugin extends JavaPlugin implements Listener
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e)
+    public void onPlayerJoin(PlayerJoinEvent e) throws SQLException
     {
         ScoreboardHandler scoreboard = library.makeScoreboard(e.getPlayer(), 20);
         scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Your Name:", "{player}", "&r&r", "&6Level", "{level}")));
         scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Food:", "{food}", "&r&r", "&6Tealth", "{health}")));
+
+        ResultSet query = database.query("SELECT * FROM `users`;");
+
+        while (query.next()) {
+            e.getPlayer().sendMessage(query.getString("name"));
+        }
     }
 }
