@@ -10,6 +10,16 @@ import java.sql.Statement;
 public class MySQL extends HostnameDatabase
 {
 
+    /**
+     * Creates a new MySQL database connection.
+     *
+     * @param library  The sen-library instance.
+     * @param hostname The hostname to use to connect to the database.
+     * @param port     The port the database is listing on.
+     * @param database The database name.
+     * @param username The login username.
+     * @param password The login password.
+     */
     public MySQL(SenLibrary library, String hostname, int port, String database, String username, String password)
     {
         super(library, hostname, port, database, username, password);

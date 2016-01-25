@@ -325,21 +325,67 @@ public final class SenLibrary
         return scoreboardFactory.make(name, slot, objective, delay);
     }
 
+    /**
+     * Creates a MySQL database connection using the given database, username and
+     * password. The hostname used is "localhost", and the port is "3306", if
+     * you wish to use a different hostname and port, please use the the
+     * other connectMySQL method that supports hostnames and ports.
+     *
+     * @param database The database name to connect to.
+     * @param username The username for the database.
+     * @param password The password for the database.
+     * @return MySQL
+     */
     public MySQL connectMySQL(String database, String username, String password)
     {
         return connectMySQL("localhost", 3306, database, username, password);
     }
 
+    /**
+     * Creates a MySQL database connection using the given port, database,
+     * username and password. The hostname used is "localhost", if you
+     * whish to use a different hostname, please use the other
+     * connectMySQL method that support hostnames.
+     *
+     * @param port     The port the database is listing on.
+     * @param database The database name to connect to.
+     * @param username The username for the database.
+     * @param password The password for the database.
+     * @return MySQL
+     */
     public MySQL connectMySQL(int port, String database, String username, String password)
     {
         return connectMySQL("localhost", port, database, username, password);
     }
 
+    /**
+     * Creates a MySQL database connection using the given hostname,
+     * database, username and password. The port used is "3306",
+     * if you whish to use a different port, please use the
+     * other connectMySQL method that support ports.
+     *
+     * @param hostname The hostname the database is listening on,
+     * @param database The database name to connect to.
+     * @param username The username for the database.
+     * @param password The password for the database.
+     * @return MySQL
+     */
     public MySQL connectMySQL(String hostname, String database, String username, String password)
     {
         return connectMySQL(hostname, 3306, database, username, password);
     }
 
+    /**
+     * Creates a MySQL database connection using the given
+     * hostname, port, database, username and password.
+     *
+     * @param hostname The hostname the database is listening on,
+     * @param port     The port the database is listing on.
+     * @param database The database name to connect to.
+     * @param username The username for the database.
+     * @param password The password for the database.
+     * @return MySQL
+     */
     public MySQL connectMySQL(String hostname, int port, String database, String username, String password)
     {
         MySQL connection = new MySQL(this, hostname, port, database, username, password);
@@ -347,16 +393,45 @@ public final class SenLibrary
         return (MySQL) getDatabaseFactory().setConnection(connection);
     }
 
+    /**
+     * Creates an in-memory SQLite database connection, the database
+     * and it's tables and data will all be deleted upon a server
+     * shutdown or reload, this should only be used for testing
+     * environments or storing information temporarily.
+     *
+     * @return SQLite
+     */
     public SQLite connectSQLite()
     {
-        return new SQLite(this);
+        SQLite connection = new SQLite(this);
+
+        return (SQLite) getDatabaseFactory().setConnection(connection);
     }
 
+    /**
+     * Creates a SQLite database connection using the directory and
+     * filename, the extension will default to "sqlite", if you
+     * whish to use a different extension, please use the
+     * other connectSQLite method support extensions.
+     *
+     * @param directory The folder the database is located in.
+     * @param filename  The name of the database file.
+     * @return SQLite
+     */
     public SQLite connectSQLite(String directory, String filename)
     {
         return connectSQLite(directory, filename, "sqlite");
     }
 
+    /**
+     * Creates a SQLite database connection using the directory,
+     * filename and extension given to the method.
+     *
+     * @param directory The folder the database is located in.
+     * @param filename  The name of the database file.
+     * @param extension The extension of the database file.
+     * @return SQLite
+     */
     public SQLite connectSQLite(String directory, String filename, String extension)
     {
         SQLite connection = new SQLite(this, directory, filename, extension);
@@ -364,6 +439,12 @@ public final class SenLibrary
         return (SQLite) getDatabaseFactory().setConnection(connection);
     }
 
+    /**
+     * Returns the database factory instance, allowing
+     * you to access schemas and query builders.
+     *
+     * @return DatabaseFactory
+     */
     public DatabaseFactory getDatabaseFactory()
     {
         if (databaseFactory == null) {

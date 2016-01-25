@@ -12,11 +12,25 @@ import java.sql.Statement;
 public class SQLite extends FilenameDatabase
 {
 
+    /**
+     * Creates a new SQLite database connection,
+     * this will create an in-memory database.
+     *
+     * @param library The sen-library instance.
+     */
     public SQLite(SenLibrary library)
     {
         super(library);
     }
 
+    /**
+     * Creates a new SQLite database connection.
+     *
+     * @param library   The sen-library instance.
+     * @param directory The folder the database is located in.
+     * @param filename  The name of the database file.
+     * @param extension The extension of the database file.
+     */
     public SQLite(SenLibrary library, String directory, String filename, String extension)
     {
         super(library, directory, filename, extension);
