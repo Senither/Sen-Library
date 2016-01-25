@@ -1,6 +1,7 @@
 package com.senither.library.database.contacts;
 
 import com.senither.library.SenLibrary;
+import com.senither.library.database.utils.QueryBuilder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -223,6 +224,18 @@ public abstract class Database implements DatabaseContract
         }
 
         return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = statement.getUpdateCount()));
+    }
+
+    /**
+     * Queries the database with the query built from the query builder object.
+     *
+     * @param builder The query to build.
+     * @return ResultSet
+     * @throws SQLException
+     */
+    public final synchronized ResultSet query(QueryBuilder builder) throws SQLException
+    {
+        return query(builder.toSQL());
     }
 
     /**
