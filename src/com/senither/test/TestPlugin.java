@@ -3,17 +3,12 @@ package com.senither.test;
 import com.senither.library.SenLibrary;
 import com.senither.library.chat.ChatFilterType;
 import com.senither.library.config.Configuration;
-import com.senither.library.database.MySQL;
-import com.senither.library.database.utils.QueryBuilder;
+import com.senither.library.database.eloquent.DataRow;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.scoreboard.ScoreboardHandler;
 import com.senither.library.scoreboard.ScoreboardPage;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,8 +25,6 @@ public class TestPlugin extends JavaPlugin implements Listener
 
     private SenLibrary library;
 
-    private MySQL database;
-
     @Override
     public void onEnable()
     {
@@ -43,7 +36,7 @@ public class TestPlugin extends JavaPlugin implements Listener
         config.set("this.is.a.test", true);
         config.saveConfig();
 
-        database = library.connectMySQL("localhost", "minecraft", "username", "secret");
+        library.connectMySQL("localhost", "minecraft", "username", "secret");
 
         getServer().getPluginManager().registerEvents(this, this);
     }
@@ -80,14 +73,8 @@ public class TestPlugin extends JavaPlugin implements Listener
         scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Your Name:", "{player}", "&r&r", "&6Level", "{level}")));
         scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Food:", "{food}", "&r&r", "&6Tealth", "{health}")));
 
-        try {
-            ResultSet query = database.query(new QueryBuilder().table("users").where("id", "<", 5));
-
-            while (query.next()) {
-                e.getPlayer().sendMessage(query.getString("name"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(TestPlugin.class.getName()).log(Level.SEVERE, null, ex);
+        for (DataRow row : new User().where("id", "<", 5).get()) {
+            e.getPlayer().sendMessage(row.getString("name"));
         }
     }
 }

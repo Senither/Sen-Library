@@ -2,6 +2,7 @@ package com.senither.library.database;
 
 import com.senither.library.SenLibrary;
 import com.senither.library.database.contacts.Database;
+import com.senither.library.database.eloquent.Eloquent;
 
 public class DatabaseFactory
 {
@@ -53,6 +54,8 @@ public class DatabaseFactory
     public Database setConnection(Database connection)
     {
         this.connection = connection;
+
+        Eloquent.setConnection(this.connection);
 
         return this.connection;
     }
