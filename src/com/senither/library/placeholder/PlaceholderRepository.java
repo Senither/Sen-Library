@@ -6,6 +6,7 @@ import com.senither.library.exceptions.InvalidPlaceholderException;
 import com.senither.library.placeholder.contracts.GlobalPlaceholder;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -30,11 +31,20 @@ public class PlaceholderRepository
      */
     private final HashMap<String, PlaceholderContainer> placeholders;
 
+    /**
+     * Represents our regex placeholder pattern, this is used to
+     * check if a string has a placeholder in it before running
+     * and calling all the callbacks and formatters.
+     *
+     */
+    private final Pattern pattern;
+
     public PlaceholderRepository(SenLibrary library)
     {
         this.library = library;
 
         this.placeholders = new HashMap<>();
+        this.pattern = Pattern.compile("(\\{)+[A-Za-z-]+(\\})");
     }
 
     public boolean push(Plugin plugin, String placeholder, Placeholder callback) throws InvalidPlaceholderException
@@ -115,6 +125,6 @@ public class PlaceholderRepository
 
     private boolean hasPlaceholder(String str)
     {
-        return str.matches("(\\{)+[A-Za-z-]+(\\})");
+        return pattern.matcher(str).find();
     }
 }
