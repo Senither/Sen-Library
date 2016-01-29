@@ -28,9 +28,10 @@ public class ScoreboardFactory
             return make(UUID.randomUUID().toString(), slot, objective, delay);
         }
 
-        ScoreboardHandler scoreboard = new ScoreboardHandler(library, slot, objective, delay);
-
+        ScoreboardHandler scoreboard = new ScoreboardHandler(library, name, slot, objective, delay);
         scoreboards.put(name, scoreboard);
+
+        library.info("ScoreboardFactory - Building scoreboard: " + scoreboard);
 
         return scoreboard;
     }

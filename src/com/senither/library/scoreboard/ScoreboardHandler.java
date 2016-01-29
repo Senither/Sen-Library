@@ -16,6 +16,8 @@ public final class ScoreboardHandler implements Runnable
 {
 
     private final SenLibrary library;
+    private final String name;
+
     private final Scoreboard board;
     private final DisplaySlot slot;
     private final Team team;
@@ -29,9 +31,11 @@ public final class ScoreboardHandler implements Runnable
     private int extra = 0;
     private int ticks = 0;
 
-    public ScoreboardHandler(SenLibrary library, DisplaySlot slot, String objective, int delay)
+    public ScoreboardHandler(SenLibrary library, String name, DisplaySlot slot, String objective, int delay)
     {
         this.library = library;
+        this.name = name;
+
         this.slot = slot;
         this.delay = delay;
         this.pages = new ArrayList<>();
@@ -175,5 +179,11 @@ public final class ScoreboardHandler implements Runnable
 
             occupiedEntrys.put(i, line);
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("[id=%s, slot=%s, delay=%d]", name, slot.name(), delay);
     }
 }

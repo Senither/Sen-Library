@@ -253,6 +253,8 @@ public class InventoryBuilder
      */
     public Inventory build()
     {
+        library.info("InventoryBuilder - Building inventory: " + toString());
+
         String inventoryTitle = library.getPlaceholder().format(title);
 
         return buildInventory(inventoryTitle);
@@ -266,6 +268,8 @@ public class InventoryBuilder
      */
     public Inventory build(Player player)
     {
+        library.info("InventoryBuilder - Building inventory for " + player.getName() + ": " + toString());
+
         String inventoryTitle = library.getPlaceholder().format(title, player);
 
         return buildInventory(inventoryTitle);
@@ -288,5 +292,11 @@ public class InventoryBuilder
         }
 
         return inventory;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("[title=%s, slots=%d, items=%d]", title, size, items.size());
     }
 }

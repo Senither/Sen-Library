@@ -57,6 +57,8 @@ public class PlaceholderRepository
             return false;
         }
 
+        library.info("PlaceholderRepository - Added a new placeholder: " + String.format("[name=%s]", placeholder));
+
         placeholders.put(placeholder, new PlaceholderContainer(plugin, placeholder, callback));
 
         return true;
@@ -71,6 +73,8 @@ public class PlaceholderRepository
         if (!hasPlaceholder(str)) {
             return str;
         }
+
+        library.info("PlaceholderRepository - Player formating called on: " + String.format("[string=%s, player=%s]", str, player.getName()));
 
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (str.contains(placeholder.toString())) {
@@ -99,6 +103,8 @@ public class PlaceholderRepository
         if (!hasPlaceholder(str)) {
             return str;
         }
+
+        library.info("PlaceholderRepository - Normal formating called on: " + String.format("[string=%s]", str));
 
         for (PlaceholderContainer placeholder : placeholders.values()) {
             if (placeholder.getType().equals(PlaceholderType.PLAYER)) {

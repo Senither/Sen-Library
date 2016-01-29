@@ -82,6 +82,24 @@ public final class SenLibrary
     private DatabaseFactory databaseFactory;
 
     /**
+     * The sen library debugging value, if this is set to
+     * true, all actions going through the library will
+     * post debug messages to the console.
+     *
+     * @var Boolean
+     */
+    private boolean debug = false;
+
+    /**
+     * Represents our database logger instance, allowing
+     * us to get more information during development
+     * if debugging has been enabled.
+     *
+     * @var Logger
+     */
+    private static final Logger LOGGER = Logger.getGlobal();
+
+    /**
      * Creates a new SenLibrary instance.
      *
      * @param plugin The JavaPlugin class instance.
@@ -89,6 +107,134 @@ public final class SenLibrary
     public SenLibrary(JavaPlugin plugin)
     {
         this.plugin = plugin;
+    }
+
+    /**
+     * Creates a new SenLibrary instance and sets
+     * the debugging value at the same time.
+     *
+     * @param plugin The JavaPlugin class instance.
+     * @param debug  The debug state that should be used.
+     */
+    public SenLibrary(JavaPlugin plugin, boolean debug)
+    {
+        this.plugin = plugin;
+        this.debug = debug;
+    }
+
+    /**
+     * Sets the new debugging state, if it is set to true, the
+     * library will send messages to the console about what
+     * is going on within the library itself
+     *
+     * @param value The new debugging value.
+     */
+    public void enableDebug(boolean value)
+    {
+        this.debug = value;
+    }
+
+    /**
+     * Returns true if the library is in debugging
+     * mode, it will return false otherwise.
+     *
+     * @return Boolean
+     */
+    public boolean isDebugging()
+    {
+        return debug;
+    }
+
+    /**
+     * Sends a info log message to the console/terminal.
+     *
+     * @param message The message to send.
+     */
+    public void info(String message)
+    {
+        log(Level.INFO, message);
+    }
+
+    /**
+     * Sends a info log message to the console/terminal.
+     *
+     * @param message The message to send.
+     * @param objects The objects to parse to the logger log method.
+     */
+    public void info(String message, Object... objects)
+    {
+        log(Level.INFO, message, objects);
+    }
+
+    /**
+     * Sends a warning log message to the console/terminal.
+     *
+     * @param message The message to send.
+     */
+    public void warning(String message)
+    {
+        log(Level.WARNING, message);
+    }
+
+    /**
+     * Sends a warning log message to the console/terminal.
+     *
+     * @param message The message to send.
+     * @param objects The objects to parse to the logger log method.
+     */
+    public void warning(String message, Object... objects)
+    {
+        log(Level.WARNING, message, objects);
+    }
+
+    /**
+     * Sends a error log message to the console/terminal.
+     *
+     * @param message The message to send.
+     */
+    public void error(String message)
+    {
+        log(Level.SEVERE, message);
+    }
+
+    /**
+     * Sends a error log message to the console/terminal.
+     *
+     * @param message The message to send.
+     * @param objects The objects to parse to the logger log method.
+     */
+    public void error(String message, Object... objects)
+    {
+        log(Level.SEVERE, message, objects);
+    }
+
+    /**
+     * Sends a log message to the console/terminal of the given
+     * level if the debugging level is set to true.
+     *
+     * @param level   The level of the log message.
+     * @param message The message to send.
+     */
+    public void log(Level level, String message)
+    {
+        if (debug) {
+            LOGGER.log(level, "[{0}::SenLibrary]: {1}", new Object[]{plugin.getName(), message});
+        }
+    }
+
+    /**
+     * Sends a log message to the console/terminal of the given level
+     * with the given objects if the debugging level is set to true.
+     *
+     * @param level   The level of the log message.
+     * @param message The message to send.
+     * @param objects The objects that should be parsed to the logger log method.
+     */
+    public void log(Level level, String message, Object... objects)
+    {
+        if (debug) {
+            LOGGER.log(level, "[" + plugin.getName() + "::SenLibrary]: " + message, objects);
+        }
     }
 
     /**

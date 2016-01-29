@@ -10,8 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class Database implements DatabaseContract
 {
@@ -23,15 +21,6 @@ public abstract class Database implements DatabaseContract
      * @var SenLibrary
      */
     protected final SenLibrary library;
-
-    /**
-     * Represents our database logger instance, allowing
-     * us to get more information during development
-     * if debugging has been enabled.
-     *
-     * @var Logger
-     */
-    protected final Logger logger;
 
     /**
      * Represents our prepared query statements and their statement
@@ -59,15 +48,6 @@ public abstract class Database implements DatabaseContract
     protected int lastUpdate;
 
     /**
-     * Represents our debugging value, if this is set to true, the
-     * console will tell you about everything that is going on
-     * within the database factory and the database.
-     *
-     * @var Boolean
-     */
-    protected boolean debug;
-
-    /**
      * Creates a new database instance.
      *
      * @param library The sen-library instance.
@@ -76,25 +56,7 @@ public abstract class Database implements DatabaseContract
     {
         this.library = library;
 
-        debug = false;
-        logger = library.getPlugin().getLogger();
         preparedStatements = new HashMap();
-    }
-
-    /**
-     * Creates a new database instance.
-     *
-     * @param library The sen-library instance.
-     * @param debug   The database debugging value.
-     */
-    public Database(SenLibrary library, boolean debug)
-    {
-        this.library = library;
-
-        logger = library.getPlugin().getLogger();
-        preparedStatements = new HashMap();
-
-        this.debug = debug;
     }
 
     /**
@@ -122,7 +84,7 @@ public abstract class Database implements DatabaseContract
     public final boolean close()
     {
         if (connection == null) {
-            warning("Could not close connection, it is null.");
+            library.warning("Database - Could not close connection, it is null.");
             return false;
         }
 
@@ -131,7 +93,7 @@ public abstract class Database implements DatabaseContract
 
             return true;
         } catch (SQLException e) {
-            warning("Could not close connection, SQLException: {0}", e.getMessage());
+            library.warning("Database - Could not close connection, SQLException: {0}", e.getMessage());
         }
 
         return false;
@@ -195,19 +157,6 @@ public abstract class Database implements DatabaseContract
     }
 
     /**
-     * Sets the database debugging value, if set to true,
-     * the database class will send messages to the
-     * terminal about what is going on within the
-     * class and with the database.
-     *
-     * @param debug The debugging value.
-     */
-    public final void enableDebug(boolean debug)
-    {
-        this.debug = debug;
-    }
-
-    /**
      * Queries the database with the given query.
      *
      * @param query The query to run.
@@ -216,6 +165,8 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ResultSet query(String query) throws SQLException
     {
+        library.info("Database - The follow query has been added to the query queue: " + query);
+
         queryValidation(getStatement(query));
         Statement statement = getConnection().createStatement();
 
@@ -248,6 +199,8 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ResultSet query(PreparedStatement query, StatementContract statement) throws SQLException
     {
+        library.info("Database - The follow prepared statement has been added to the query queue: " + query);
+
         queryValidation(statement);
 
         if (query.execute()) {
@@ -282,6 +235,8 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized PreparedStatement prepare(String query) throws SQLException
     {
+        library.info("Database - The follow query has been added to the prepared query queue: " + query);
+
         StatementContract statement = getStatement(query);
         PreparedStatement ps = connection.prepareStatement(query);
 
@@ -300,6 +255,8 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ArrayList<Long> insert(String query) throws SQLException
     {
+        library.info("Database - The follow query has been added to the query inserter: " + query);
+
         ArrayList<Long> keys = new ArrayList();
 
         PreparedStatement ps = connection.prepareStatement(query, 1);
@@ -317,113 +274,23 @@ public abstract class Database implements DatabaseContract
      * Stores data in the database from the given prepared statement,
      * this will return a list of ids from the inserted rows.
      *
-     * @param ps The prepared statement to run.
+     * @param query The prepared statement to run.
      * @return ArrayList
      * @throws SQLException
      */
-    public final synchronized ArrayList<Long> insert(PreparedStatement ps) throws SQLException
+    public final synchronized ArrayList<Long> insert(PreparedStatement query) throws SQLException
     {
-        lastUpdate = ps.executeUpdate();
-        preparedStatements.remove(ps);
+        library.info("Database - The follow prepared statement has been added to the query inserter: " + query);
+
+        lastUpdate = query.executeUpdate();
+        preparedStatements.remove(query);
 
         ArrayList<Long> keys = new ArrayList();
-        ResultSet key = ps.getGeneratedKeys();
+        ResultSet key = query.getGeneratedKeys();
         if (key.next()) {
             keys.add(key.getLong(1));
         }
 
         return keys;
-    }
-
-    /**
-     * Sends a info log message to the console/terminal.
-     *
-     * @param message The message to send.
-     */
-    protected final void info(String message)
-    {
-        log(Level.INFO, message);
-    }
-
-    /**
-     * Sends a info log message to the console/terminal.
-     *
-     * @param message The message to send.
-     * @param objects The objects to parse to the logger log method.
-     */
-    protected final void info(String message, Object... objects)
-    {
-        log(Level.INFO, message, objects);
-    }
-
-    /**
-     * Sends a warning log message to the console/terminal.
-     *
-     * @param message The message to send.
-     */
-    protected final void warning(String message)
-    {
-        log(Level.WARNING, message);
-    }
-
-    /**
-     * Sends a warning log message to the console/terminal.
-     *
-     * @param message The message to send.
-     * @param objects The objects to parse to the logger log method.
-     */
-    protected final void warning(String message, Object... objects)
-    {
-        log(Level.WARNING, message, objects);
-    }
-
-    /**
-     * Sends a error log message to the console/terminal.
-     *
-     * @param message The message to send.
-     */
-    protected final void error(String message)
-    {
-        log(Level.SEVERE, message);
-    }
-
-    /**
-     * Sends a error log message to the console/terminal.
-     *
-     * @param message The message to send.
-     * @param objects The objects to parse to the logger log method.
-     */
-    protected final void error(String message, Object... objects)
-    {
-        log(Level.SEVERE, message, objects);
-    }
-
-    /**
-     * Sends a log message to the console/terminal of the given
-     * level if the debugging level is set to true.
-     *
-     * @param level   The level of the log message.
-     * @param message The message to send.
-     */
-    protected final void log(Level level, String message)
-    {
-        if (debug) {
-            logger.log(level, message);
-        }
-    }
-
-    /**
-     * Sends a log message to the console/terminal of the given level
-     * with the given objects if the debugging level is set to true.
-     *
-     * @param level   The level of the log message.
-     * @param message The message to send.
-     * @param objects The objects that should be parsed to the logger log method.
-     */
-    protected final void log(Level level, String message, Object... objects)
-    {
-        if (debug) {
-            logger.log(level, message, objects);
-        }
     }
 }

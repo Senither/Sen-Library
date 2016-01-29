@@ -28,7 +28,7 @@ public class TestPlugin extends JavaPlugin implements Listener
     @Override
     public void onEnable()
     {
-        library = new SenLibrary(this);
+        library = new SenLibrary(this, true);
 
         library.getChatFilter().addWords(Arrays.asList("fuck", "cunt", "ass", "asshole", "nigger"));
 
