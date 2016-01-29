@@ -446,11 +446,7 @@ public final class SenLibrary
 
     public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, String objective, int delay)
     {
-        if (scoreboardFactory == null) {
-            scoreboardFactory = new ScoreboardFactory(this);
-        }
-
-        ScoreboardHandler scoreboard = scoreboardFactory.make(player, slot, objective, delay);
+        ScoreboardHandler scoreboard = getScoreboardFactory().make(player, slot, objective, delay);
 
         scoreboard.addPlayer(player);
 
@@ -464,11 +460,7 @@ public final class SenLibrary
 
     public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective, int delay)
     {
-        if (scoreboardFactory == null) {
-            scoreboardFactory = new ScoreboardFactory(this);
-        }
-
-        return scoreboardFactory.make(name, slot, objective, delay);
+        return getScoreboardFactory().make(name, slot, objective, delay);
     }
 
     /**
@@ -639,6 +631,17 @@ public final class SenLibrary
         }
 
         return placeholders;
+    }
+
+    public ScoreboardFactory getScoreboardFactory()
+    {
+        if (scoreboardFactory == null) {
+            scoreboardFactory = new ScoreboardFactory(this);
+
+            plugin.getServer().getPluginManager().registerEvents(scoreboardFactory, plugin);
+        }
+
+        return scoreboardFactory;
     }
 
     /**

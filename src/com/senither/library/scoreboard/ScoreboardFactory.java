@@ -4,9 +4,12 @@ import com.senither.library.SenLibrary;
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 
-public class ScoreboardFactory
+public class ScoreboardFactory implements Listener
 {
 
     private final SenLibrary library;
@@ -34,5 +37,27 @@ public class ScoreboardFactory
         library.info("ScoreboardFactory - Building scoreboard: " + scoreboard);
 
         return scoreboard;
+    }
+
+    public boolean removeScoreboard(String name)
+    {
+        if (scoreboards.containsKey(name)) {
+            ScoreboardHandler scoreboard = scoreboards.remove(name);
+
+            library.info("ScoreboardFactory - Removing scoreboard: " + scoreboard);
+
+            scoreboard.stop();
+            scoreboard.clear();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @EventHandler
+    public void onPlayerLogout(PlayerQuitEvent e)
+    {
+        removeScoreboard(e.getPlayer().getUniqueId().toString());
     }
 }
