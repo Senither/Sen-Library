@@ -378,72 +378,131 @@ public final class SenLibrary
         return new Configuration(this, folder, name, defaultYml);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player, when creating a
+     * scoreboard for a player, the player will automatically be added to the
+     * scoreboard listeners. The objective that will be used is "test"
+     * and the delay update timer used is 5.
+     *
+     * This will used the sidebar display slot.
+     *
+     * @param player The player the scoreboard should be created for.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player)
     {
         return makeScoreboard(player, DisplaySlot.SIDEBAR, "test", 5);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player and the given
+     * objective, when creating a scoreboard for a player, the player will
+     * automatically be added to the scoreboard listeners. The delay
+     * update timer used is 5.
+     *
+     * This will used the sidebar display slot.
+     *
+     * @param player    The player the scoreboard should be created for.
+     * @param objective The objective to assign the scoreboard to.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, String objective)
     {
         return makeScoreboard(player, DisplaySlot.SIDEBAR, objective, 5);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player with the given
+     * delay, when creating a scoreboard for a player, the player will
+     * automatically be added to the scoreboard listeners. The
+     * objective that will be used is "test".
+     *
+     * This will used the sidebar display slot.
+     *
+     * @param player The player the scoreboard should be created for.
+     * @param delay  The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, int delay)
     {
         return makeScoreboard(player, DisplaySlot.SIDEBAR, "test", delay);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player, objective
+     * and delay, when creating a scoreboard for a player, the player
+     * will automatically be added to the scoreboard listeners.
+     *
+     * This will used the sidebar display slot.
+     *
+     * @param player    The player the scoreboard should be created for.
+     * @param objective The objective to assign the scoreboard to.
+     * @param delay     The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, String objective, int delay)
     {
         return makeScoreboard(player, DisplaySlot.SIDEBAR, objective, delay);
     }
 
-    public ScoreboardHandler makeScoreboard(String name)
-    {
-        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", 5);
-    }
-
-    public ScoreboardHandler makeScoreboard(String name, String objective)
-    {
-        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, 5);
-    }
-
-    public ScoreboardHandler makeScoreboard(String name, int delay)
-    {
-        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", delay);
-    }
-
-    public ScoreboardHandler makeScoreboard(String name, String objective, int delay)
-    {
-        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, delay);
-    }
-
-    //
+    /**
+     * Creates a dynamic scoreboard handler for the given player on the given
+     * display slot, when creating a scoreboard for a player, the player
+     * will automatically be added to the scoreboard listeners. The
+     * object used is "test", and update delay is 5.
+     *
+     * @param player The player the scoreboard should be created for.
+     * @param slot   The display slot to render the scoreboard at.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot)
     {
         return makeScoreboard(player, slot, "test", 5);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player on the given
+     * display slot with the given delay, when creating a scoreboard for a
+     * player, the player will automatically be added to the scoreboard
+     * listeners. The object used is "test".
+     *
+     * @param player The player the scoreboard should be created for.
+     * @param slot   The display slot to render the scoreboard at.
+     * @param delay  The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, int delay)
     {
         return makeScoreboard(player, slot, "test", delay);
     }
 
-    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot)
-    {
-        return makeScoreboard(name, slot, "test", 5);
-    }
-
-    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, int delay)
-    {
-        return makeScoreboard(name, slot, "test", delay);
-    }
-
+    /**
+     * Creates a dynamic scoreboard handler for the given player on the given
+     * display slot with the given objective, when creating a scoreboard for
+     * a player, the player will automatically be added to the scoreboard
+     * listeners. The update delay used is 5.
+     *
+     * @param player    The player the scoreboard should be created for.
+     * @param slot      The display slot to render the scoreboard at.
+     * @param objective The objective to assign the scoreboard to.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, String objective)
     {
         return makeScoreboard(player, slot, objective, 5);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler for the given player on the given display
+     * slot with the given objective, when creating a scoreboard for a player, the
+     * player will automatically be added to the scoreboard listeners.
+     *
+     * @param player    The player the scoreboard should be created for.
+     * @param slot      The display slot to render the scoreboard at.
+     * @param objective The objective to assign the scoreboard to.
+     * @param delay     The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(Player player, DisplaySlot slot, String objective, int delay)
     {
         ScoreboardHandler scoreboard = getScoreboardFactory().make(player, slot, objective, delay);
@@ -453,11 +512,133 @@ public final class SenLibrary
         return scoreboard;
     }
 
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key). The display slot
+     * used is "sidebar", the objective is "test" and the update delay is 5.
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name The name or key to give the scoreboard.
+     * @return ScoreboardHandler
+     */
+    public ScoreboardHandler makeScoreboard(String name)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", 5);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key) and the given
+     * objective. The display slot used is "sidebar" and the update delay is 5.
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name      The name or key to give the scoreboard.
+     * @param objective The objective to assign the scoreboard to.
+     * @return ScoreboardHandler
+     */
+    public ScoreboardHandler makeScoreboard(String name, String objective)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, 5);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key) and the given update
+     * delay. The display slot used is "sidebar" and the objective is "test".
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name  The name or key to give the scoreboard.
+     * @param delay The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
+    public ScoreboardHandler makeScoreboard(String name, int delay)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, "test", delay);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key), the objective
+     * and the given update delay. The display slot used is "sidebar".
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name      The name or key to give the scoreboard.
+     * @param objective The objective to assign the scoreboard to.
+     * @param delay     The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
+    public ScoreboardHandler makeScoreboard(String name, String objective, int delay)
+    {
+        return makeScoreboard(name, DisplaySlot.SIDEBAR, objective, delay);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key) on the given
+     * display slot. The objective used is "test", and the update delay is 5.
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name The name or key to give the scoreboard.
+     * @param slot The display slot to render the scoreboard at.
+     * @return ScoreboardHandler
+     */
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot)
+    {
+        return makeScoreboard(name, slot, "test", 5);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key), display slot
+     * and update delay. The objective used is "test".
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name  The name or key to give the scoreboard.
+     * @param slot  The display slot to render the scoreboard at.
+     * @param delay The scoreboard update delay.
+     * @return
+     */
+    public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, int delay)
+    {
+        return makeScoreboard(name, slot, "test", delay);
+    }
+
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key), display slot
+     * and objective. The scoreboard update delay used is 5.
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name      The name or key to give the scoreboard.
+     * @param slot      The display slot to render the scoreboard at.
+     * @param objective The objective to assign the scoreboard to.
+     * @return
+     */
     public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective)
     {
         return makeScoreboard(name, slot, objective, 5);
     }
 
+    /**
+     * Creates a dynamic scoreboard handler with the given name(key),
+     * display slot, objective and update delay.
+     *
+     * If a scoreboard name(key) is already taken, a randomly assigned UUID will
+     * be used instead, you can get the name(key) from the scoreboard handler.
+     *
+     * @param name      The name or key to give the scoreboard.
+     * @param slot      The display slot to render the scoreboard at.
+     * @param objective The objective to assign the scoreboard to.
+     * @param delay     The scoreboard update delay.
+     * @return ScoreboardHandler
+     */
     public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective, int delay)
     {
         return getScoreboardFactory().make(name, slot, objective, delay);
@@ -633,6 +814,16 @@ public final class SenLibrary
         return placeholders;
     }
 
+    /**
+     * Returns the scoreboard factory, allowing you to create and remove
+     * dynamic scoreboards for one or multiple players at a time. If
+     * the scoreboard factory haven't been created yet, a new
+     * instance will be created, and it will be registered
+     * into the event management so player scoreboards
+     * can be automatically be removed.
+     *
+     * @return ScoreboardFactory
+     */
     public ScoreboardFactory getScoreboardFactory()
     {
         if (scoreboardFactory == null) {

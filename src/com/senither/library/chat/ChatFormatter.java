@@ -21,7 +21,7 @@ public class ChatFormatter
     /**
      * Creates a new chat formatter instance.
      *
-     * @param library
+     * @param library The sen-library instance.
      */
     public ChatFormatter(SenLibrary library)
     {

@@ -22,7 +22,7 @@ public class ItemParser
     /**
      * Creates a new Item Parser instance.
      *
-     * @param library
+     * @param library The sen-library instance.
      */
     public ItemParser(SenLibrary library)
     {

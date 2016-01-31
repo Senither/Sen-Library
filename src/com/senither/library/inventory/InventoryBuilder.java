@@ -68,7 +68,7 @@ public class InventoryBuilder
 
         size = rows * 9;
 
-        this.title = library.getChatFormatter().colorize("&9{player}'s Inventory");
+        title = library.getChatFormatter().colorize("&9{player}'s Inventory");
 
         items = new HashMap<>();
         parser = library.getItemParser();
@@ -96,6 +96,12 @@ public class InventoryBuilder
         parser = new ItemParser(library);
     }
 
+    /**
+     * Sets the title of the inventory.
+     *
+     * @param title The title that should be used.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder setTitle(String title)
     {
         this.title = library.getChatFormatter().colorize(title);
@@ -103,6 +109,12 @@ public class InventoryBuilder
         return this;
     }
 
+    /**
+     * Unsets the given item index from the inventory.
+     *
+     * @param index The index to unset.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder unset(int index)
     {
         items.remove(index);
@@ -110,6 +122,13 @@ public class InventoryBuilder
         return this;
     }
 
+    /**
+     * Unsets every index from and to the given indexs.
+     *
+     * @param from Where to start from.
+     * @param to   Where to end at.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder unset(int from, int to)
     {
         int min = Math.min(from, to), max = Math.max(from, to);
@@ -121,34 +140,85 @@ public class InventoryBuilder
         return this;
     }
 
+    /**
+     * Creates a line of the given item stack.
+     *
+     * @param row  The row to write to.
+     * @param item The item stack to write.
+     * @return inventoryBuilder
+     */
     public InventoryBuilder createLine(int row, ItemStack item)
     {
         for (int i = row * 9; i < (9 + (row * 9)); i++) {
             items.put(i, item);
         }
+
         return this;
     }
 
+    /**
+     * Creates a line of the given item stack, the item
+     * stack will be modified to have the given name.
+     *
+     * @param row  The row to write to.
+     * @param item The item stack to write.
+     * @param name The name to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createLine(int row, ItemStack item, String name)
     {
         return createLine(row, parser.parse(item, name));
     }
 
+    /**
+     * Creates a line of the given item stack, the item stack
+     * will be modified to have the given name and lore.
+     *
+     * @param row  The row to write to.
+     * @param item The item stack to write.
+     * @param name The name to given the item stack.
+     * @param lore The lore to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createLine(int row, ItemStack item, String name, List<String> lore)
     {
         return createLine(row, parser.parse(item, name, lore));
     }
 
+    /**
+     * Creates an item stack from the given material and name.
+     *
+     * @param row      The row to write to.
+     * @param material The material to use to create the item stack.
+     * @param name     The name to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createLine(int row, Material material, String name)
     {
         return createLine(row, parser.make(material, name));
     }
 
+    /**
+     * Creates an item stack from the given material, name and lore.
+     *
+     * @param row      The row to write to.
+     * @param material The material to use to create the item stack.
+     * @param name     The name to give the item stack.
+     * @param lore     The lore to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createLine(int row, Material material, String name, List<String> lore)
     {
         return createLine(row, parser.make(material, name, lore));
     }
 
+    /**
+     * Creates a wall around the outside of the inventory with the given item stack.
+     *
+     * @param side The side to write to.
+     * @param item The item stack to write to the side.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createWall(WallSide side, ItemStack item)
     {
         int index = -1, multiplier = -1, timers = -1;
@@ -198,39 +268,95 @@ public class InventoryBuilder
         return this;
     }
 
+    /**
+     * Creates a wall around the outside of the inventory with the given item stack.
+     *
+     * @param side The side to write to.
+     * @param item The item stack to write to the side.
+     * @param name The name to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name)
     {
         return createWall(side, parser.parse(item, name));
     }
 
+    /**
+     * Creates a wall around the outside of the inventory with the given item stack.
+     *
+     * @param side The side to write to.
+     * @param item The item stack to write to the side.
+     * @param name The name to give the item stack.
+     * @param lore The lore to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createWall(WallSide side, ItemStack item, String name, List<String> lore)
     {
         return createWall(side, parser.parse(item, name, lore));
     }
 
+    /**
+     * Creates a wall around the outside of the inventory with the given material.
+     *
+     * @param side     The side to write to.
+     * @param material The material to use to create the item stack.
+     * @param name     The name to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createWall(WallSide side, Material material, String name)
     {
         return createWall(side, parser.make(material, name));
     }
 
+    /**
+     * Creates a wall around the outside of the inventory with the given material.
+     *
+     * @param side     The side to write to.
+     * @param material The material to use to create the item stack.
+     * @param name     The name to give the item stack.
+     * @param lore     The lore to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder createWall(WallSide side, Material material, String name, List<String> lore)
     {
         return createWall(side, parser.make(material, name, lore));
     }
 
+    /**
+     * Fills the entire inventory with the given item stack.
+     *
+     * @param item The item stack to add.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder fill(ItemStack item)
     {
         for (int i = 0; i < (size / 9); i++) {
             createLine(i, item);
         }
+
         return this;
     }
 
+    /**
+     * Fills the entire inventory with the given item stack.
+     *
+     * @param item The item stack to add.
+     * @param name The name to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder fill(ItemStack item, String name)
     {
         return fill(parser.parse(item, name));
     }
 
+    /**
+     * Fills the entire inventory with the given item stack.
+     *
+     * @param item The item stack to add.
+     * @param name The name to give the item stack.
+     * @param lore The lore to give the item stack.
+     * @return InventoryBuilder
+     */
     public InventoryBuilder fill(ItemStack item, String name, List<String> lore)
     {
         return fill(parser.parse(item, name, lore));

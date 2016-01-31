@@ -563,7 +563,7 @@ public final class Carbon implements Cloneable
     }
 
     @Override
-    protected Carbon clone()
+    public Carbon clone()
     {
         try {
             return new Carbon(toString());
