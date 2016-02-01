@@ -103,11 +103,25 @@ public abstract class Grammar
      */
     protected String formatField(String field)
     {
+        field = field.trim();
+
+        if (field.contains(" ")) {
+            String[] both = field.split(" ");
+
+            if (both.length == 3 && both[1].equalsIgnoreCase("as")) {
+                return String.format("%s AS '%s'", formatField(both[0]), both[2]);
+            }
+        }
+
         if (field.contains(".")) {
             String[] both = field.split("\\.");
 
             if (both.length == 2) {
-                field = String.format("%s`.`%s", both[0], both[1]);
+                if (both[1].trim().equals("*")) {
+                    return String.format("`%s`.*", both[0]);
+                }
+
+                return String.format("`%s`.`%s`", both[0], both[1]);
             }
         }
 

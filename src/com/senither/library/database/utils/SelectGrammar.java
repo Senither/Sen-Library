@@ -16,6 +16,8 @@ public class SelectGrammar extends Grammar
     {
         buildColumns(builder);
 
+        buildJoins(builder);
+
         buildWhereClause(builder);
 
         return finalize(builder);
@@ -34,6 +36,40 @@ public class SelectGrammar extends Grammar
         }
 
         query += String.format(" FROM %s ", formatField(builder.getTable()));
+    }
+
+    private void buildJoins(QueryBuilder builder)
+    {
+        List<JoinClause> joins = builder.getJoins();
+
+        for (JoinClause join : joins) {
+            if (join.clauses.isEmpty()) {
+                continue;
+            }
+
+            addPart(String.format(" %s JOIN %s ON ", join.type.toUpperCase(), formatField(join.table)));
+
+            int orderLength = 0;
+
+            for (Clause clause : join.clauses) {
+                String string = String.format(" %s %s %s",
+                /* >_> */ formatField(clause.getOne()), clause.getIdentifier(), formatField((String) clause.getTwo())
+                );
+
+                if (clause.getOrder() == null) {
+                    clause.setOrder(OperatorType.AND);
+                }
+
+                String operator = clause.getOrder().getOperator();
+
+                orderLength = operator.length() + 2;
+                addPart(String.format(string + " %s ", operator));
+            }
+
+            if (orderLength > 0) {
+                removeLast(orderLength);
+            }
+        }
     }
 
     private void buildWhereClause(QueryBuilder builder)

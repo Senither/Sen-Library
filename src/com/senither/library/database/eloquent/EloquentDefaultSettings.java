@@ -3,6 +3,8 @@ package com.senither.library.database.eloquent;
 public abstract class EloquentDefaultSettings
 {
 
+    public abstract Eloquent instance();
+
     protected abstract String table();
 
     protected String primaryKey()

@@ -25,7 +25,7 @@ public class Collection implements Cloneable, Iterable<DataRow>
         this.items = new ArrayList<>();
 
         for (int i = 1; i <= meta.getColumnCount(); i++) {
-            keys.put(meta.getColumnName(i), meta.getColumnClassName(i));
+            keys.put(meta.getColumnLabel(i), meta.getColumnClassName(i));
         }
 
         while (result.next()) {

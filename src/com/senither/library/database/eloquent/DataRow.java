@@ -3,6 +3,7 @@ package com.senither.library.database.eloquent;
 import com.senither.library.utils.Carbon;
 import java.text.ParseException;
 import java.util.Map;
+import java.util.Set;
 
 public class DataRow
 {
@@ -17,6 +18,11 @@ public class DataRow
     public boolean has(String name)
     {
         return items.containsKey(name);
+    }
+
+    public Set<String> keySet()
+    {
+        return items.keySet();
     }
 
     public Object get(String name)

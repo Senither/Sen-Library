@@ -1,6 +1,12 @@
 package com.senither.library.database.utils;
 
+import com.senither.library.database.contacts.Database;
 import com.senither.library.database.contacts.Grammar;
+import com.senither.library.database.eloquent.Collection;
+import com.senither.library.database.eloquent.Eloquent;
+import com.senither.library.exceptions.DatabaseException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class QueryBuilder
+public final class QueryBuilder
 {
 
     private QueryType type;
@@ -24,7 +30,18 @@ public class QueryBuilder
 
     private final List<String> columns = new ArrayList<>();
 
+    private final List<JoinClause> joins = new ArrayList<>();
+
     private final List<Map<String, Object>> items = new ArrayList<>();
+
+    public QueryBuilder()
+    {
+    }
+
+    public QueryBuilder(String table)
+    {
+        table(table);
+    }
 
     public QueryBuilder table(String table)
     {
@@ -155,6 +172,135 @@ public class QueryBuilder
         return order;
     }
 
+    public JoinClause join(String table, String type)
+    {
+        JoinClause join = new JoinClause(type, table);
+
+        joins.add(join);
+
+        return join;
+    }
+
+    public JoinClause leftJoin(String table)
+    {
+        return join(table, "left");
+    }
+
+    public QueryBuilder leftJoin(String table, String one, String two)
+    {
+        JoinClause join = leftJoin(table);
+
+        join.on(one, two);
+
+        return this;
+    }
+
+    public QueryBuilder leftJoin(String table, String one, String identifier, String two)
+    {
+        JoinClause join = leftJoin(table);
+
+        join.on(one, identifier, two);
+
+        return this;
+    }
+
+    public JoinClause rightJoin(String table)
+    {
+        return join(table, "right");
+    }
+
+    public QueryBuilder rightJoin(String table, String one, String two)
+    {
+        JoinClause join = rightJoin(table);
+
+        join.on(one, two);
+
+        return this;
+    }
+
+    public QueryBuilder rightJoin(String table, String one, String identifier, String two)
+    {
+        JoinClause join = rightJoin(table);
+
+        join.on(one, identifier, two);
+
+        return this;
+    }
+
+    public JoinClause innerJoin(String table)
+    {
+        return join(table, "inner");
+    }
+
+    public QueryBuilder innerJoin(String table, String one, String two)
+    {
+        JoinClause join = innerJoin(table);
+
+        join.on(one, two);
+
+        return this;
+    }
+
+    public QueryBuilder innerJoin(String table, String one, String identifier, String two)
+    {
+        JoinClause join = innerJoin(table);
+
+        join.on(one, identifier, two);
+
+        return this;
+    }
+
+    public JoinClause outerJoin(String table)
+    {
+        return join(table, "outer");
+    }
+
+    public QueryBuilder outerJoin(String table, String one, String two)
+    {
+        JoinClause join = outerJoin(table);
+
+        join.on(one, two);
+
+        return this;
+    }
+
+    public QueryBuilder outerJoin(String table, String one, String identifier, String two)
+    {
+        JoinClause join = outerJoin(table);
+
+        join.on(one, identifier, two);
+
+        return this;
+    }
+
+    public JoinClause fullJoin(String table)
+    {
+        return join(table, "full");
+    }
+
+    public QueryBuilder fullJoin(String table, String one, String two)
+    {
+        JoinClause join = fullJoin(table);
+
+        join.on(one, two);
+
+        return this;
+    }
+
+    public QueryBuilder fullJoin(String table, String one, String identifier, String two)
+    {
+        JoinClause join = fullJoin(table);
+
+        join.on(one, identifier, two);
+
+        return this;
+    }
+
+    public List<JoinClause> getJoins()
+    {
+        return joins;
+    }
+
     public QueryBuilder insert(Map<String, Object>... items)
     {
         type = QueryType.INSERT;
@@ -208,6 +354,25 @@ public class QueryBuilder
         type = QueryType.DELETE;
 
         return this;
+    }
+
+    public Collection get()
+    {
+        Database connection = Eloquent.getConnection();
+
+        if (connection == null) {
+            throw new DatabaseException("");
+        }
+
+        try {
+            ResultSet result = connection.query(this);
+
+            return new Collection(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(Eloquent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 
     public String toSQL()
