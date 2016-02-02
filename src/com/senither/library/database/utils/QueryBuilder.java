@@ -150,7 +150,7 @@ public final class QueryBuilder
         return where(column, identifier, field);
     }
 
-    public List<Clause> getWhereClouses()
+    public List<Clause> getWhereClauses()
     {
         return wheres;
     }

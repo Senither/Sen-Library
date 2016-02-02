@@ -132,14 +132,14 @@ public abstract class Grammar
 
     protected void buildWhereClause(QueryBuilder builder)
     {
-        if (builder.getWhereClouses().isEmpty()) {
+        if (builder.getWhereClauses().isEmpty()) {
             return;
         }
 
         addPart(" WHERE");
         int orderLength = 0;
 
-        for (Clause clause : builder.getWhereClouses()) {
+        for (Clause clause : builder.getWhereClauses()) {
 
             String string = String.format(" %s %s",
             /* >_> */ formatField(clause.getOne()), clause.getIdentifier()
