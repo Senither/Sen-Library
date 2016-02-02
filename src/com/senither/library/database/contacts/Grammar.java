@@ -1,5 +1,7 @@
 package com.senither.library.database.contacts;
 
+import com.senither.library.database.utils.Clause;
+import com.senither.library.database.utils.OperatorType;
 import com.senither.library.database.utils.QueryBuilder;
 import java.util.Arrays;
 import java.util.List;
@@ -126,5 +128,40 @@ public abstract class Grammar
         }
 
         return String.format("`%s`", field);
+    }
+
+    protected void buildWhereClause(QueryBuilder builder)
+    {
+        if (builder.getWhereClouses().isEmpty()) {
+            return;
+        }
+
+        addPart(" WHERE");
+        int orderLength = 0;
+
+        for (Clause clause : builder.getWhereClouses()) {
+
+            String string = String.format(" %s %s",
+            /* >_> */ formatField(clause.getOne()), clause.getIdentifier()
+            );
+
+            if (clause.getOrder() == null) {
+                clause.setOrder(OperatorType.AND);
+            }
+
+            String field = clause.getTwo().toString();
+            if (!isNumeric(field)) {
+                field = String.format("'%s'", field);
+            }
+
+            String operator = clause.getOrder().getOperator();
+
+            orderLength = operator.length() + 2;
+            addPart(String.format(string + " %s %s ", field, operator));
+        }
+
+        if (orderLength > 0) {
+            removeLast(orderLength);
+        }
     }
 }

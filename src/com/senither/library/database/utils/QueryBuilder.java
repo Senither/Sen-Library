@@ -26,7 +26,7 @@ public final class QueryBuilder
 
     private final List<String> order = new ArrayList<>();
 
-    private final List<String> wheres = new ArrayList<>();
+    private final List<Clause> wheres = new ArrayList<>();
 
     private final List<String> columns = new ArrayList<>();
 
@@ -121,7 +121,7 @@ public final class QueryBuilder
 
     public QueryBuilder where(String column, String identifier, Object field)
     {
-        wheres.addAll(Arrays.asList(column, identifier, "" + field));
+        wheres.add(new Clause(column, identifier, field));
 
         return this;
     }
@@ -133,7 +133,7 @@ public final class QueryBuilder
 
     public QueryBuilder andWhere(String column, String identifier, Object field)
     {
-        wheres.add("---AND");
+        wheres.add(new Clause(column, identifier, field, OperatorType.AND));
 
         return where(column, identifier, field);
     }
@@ -145,12 +145,12 @@ public final class QueryBuilder
 
     public QueryBuilder orWhere(String column, String identifier, Object field)
     {
-        wheres.add("---OR");
+        wheres.add(new Clause(column, identifier, field, OperatorType.OR));
 
         return where(column, identifier, field);
     }
 
-    public List<String> getWhereClouses()
+    public List<Clause> getWhereClouses()
     {
         return wheres;
     }
