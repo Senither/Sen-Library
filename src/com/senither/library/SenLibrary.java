@@ -798,14 +798,19 @@ public final class SenLibrary
 
             try {
                 // Name placeholders
-                placeholders.push(plugin, "player", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
-                placeholders.push(plugin, "playerDisplay", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
-                placeholders.push(plugin, "world", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+                placeholders.push(plugin, "playerName", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getName() : "Player");
+                placeholders.push(plugin, "playerDisplayName", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getDisplayName() : "Player");
+                placeholders.push(plugin, "playerWorld", (PlayerPlaceholder) (Player player) -> (player != null) ? player.getLocation().getWorld().getName() : "World");
+                placeholders.push(plugin, "playerLocationX", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLocation().getX() : "0");
+                placeholders.push(plugin, "playerLocationY", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLocation().getY() : "0");
+                placeholders.push(plugin, "playerLocationZ", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLocation().getZ() : "0");
+                placeholders.push(plugin, "playerLocationPitch", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLocation().getPitch() : "0");
+                placeholders.push(plugin, "playerLocationYaw", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLocation().getYaw() : "0");
 
                 // Player propertie placeholders
-                placeholders.push(plugin, "level", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
-                placeholders.push(plugin, "health", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
-                placeholders.push(plugin, "food", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
+                placeholders.push(plugin, "playerLevel", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getLevel() : "0");
+                placeholders.push(plugin, "playerHealth", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getHealth() : "0");
+                placeholders.push(plugin, "playerFood", (PlayerPlaceholder) (Player player) -> (player != null) ? "" + player.getFoodLevel() : "0");
             } catch (InvalidPlaceholderException ex) {
                 Logger.getLogger(SenLibrary.class.getName()).log(Level.SEVERE, null, ex);
             }

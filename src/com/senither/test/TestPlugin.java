@@ -73,8 +73,8 @@ public class TestPlugin extends JavaPlugin implements Listener
         Player player = e.getPlayer();
 
         ScoreboardHandler scoreboard = library.makeScoreboard(player, 20);
-        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Your Name:", "{player}", "&r&r", "&6Level", "{level}")));
-        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Food:", "{food}", "&r&r", "&6Tealth", "{health}")));
+        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Your Name:", "{playerName}", "&r&r", "&6Level", "{playerLevel}")));
+        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList("&r", "&6Food:", "{playerFood}", "&r&r", "&6Tealth", "{playerHealth}")));
 
         // - Database tests
         // Using the eloquent user model.
