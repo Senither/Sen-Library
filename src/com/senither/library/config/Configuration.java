@@ -245,7 +245,12 @@ public final class Configuration implements ConfigurationSection
     @Override
     public String getName()
     {
-        return getFileConfiguration().getName();
+        return fileName;
+    }
+
+    public String getFullName()
+    {
+        return folder.getPath() + File.separator + getName();
     }
 
     @Override
