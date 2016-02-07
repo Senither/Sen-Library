@@ -1,6 +1,5 @@
 package com.senither.library;
 
-import com.senither.library.chat.ChatFilter;
 import com.senither.library.chat.ChatFormatter;
 import com.senither.library.config.Configuration;
 import com.senither.library.database.DatabaseFactory;
@@ -48,13 +47,6 @@ public final class SenLibrary
      * @var PlaceholderRepository
      */
     private ChatFormatter chatFormatter;
-
-    /**
-     * The chat filter repository instance.
-     *
-     * @var ChatFilter
-     */
-    private ChatFilter chatFilter;
 
     /**
      * The item parser instance, allowing you
@@ -845,18 +837,6 @@ public final class SenLibrary
     public ChatFormatter getChatFormatter()
     {
         return (chatFormatter == null) ? chatFormatter = new ChatFormatter(this) : chatFormatter;
-    }
-
-    /**
-     * Returns the chat filter, allowing you to
-     * add words and rules to the filter, and
-     * as well as format strings.
-     *
-     * @return ChatFilter
-     */
-    public ChatFilter getChatFilter()
-    {
-        return (chatFilter == null) ? chatFilter = new ChatFilter() : chatFilter;
     }
 
     /**

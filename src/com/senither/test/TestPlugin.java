@@ -1,7 +1,6 @@
 package com.senither.test;
 
 import com.senither.library.SenLibrary;
-import com.senither.library.chat.ChatFilterType;
 import com.senither.library.config.Configuration;
 import com.senither.library.database.eloquent.DataRow;
 import com.senither.library.database.utils.QueryBuilder;
@@ -31,8 +30,6 @@ public class TestPlugin extends JavaPlugin implements Listener
     {
         library = new SenLibrary(this, true);
 
-        library.getChatFilter().addWords(Arrays.asList("fuck", "cunt", "ass", "asshole", "nigger"));
-
         Configuration config = library.makeConfig("test.yml");
         config.set("this.is.a.test", true);
         config.saveConfig();
@@ -59,12 +56,6 @@ public class TestPlugin extends JavaPlugin implements Listener
         inventory.open(player);
 
         return true;
-    }
-
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e)
-    {
-        e.setMessage(library.getChatFilter().runFilter(ChatFilterType.ALL, e.getMessage()));
     }
 
     @EventHandler
