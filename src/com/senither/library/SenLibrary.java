@@ -9,6 +9,8 @@ import com.senither.library.exceptions.InvalidPlaceholderException;
 import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.item.ItemParser;
+import com.senither.library.message.Message;
+import com.senither.library.message.MessageManager;
 import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import com.senither.library.scoreboard.ScoreboardFactory;
@@ -634,6 +636,39 @@ public final class SenLibrary
     public ScoreboardHandler makeScoreboard(String name, DisplaySlot slot, String objective, int delay)
     {
         return getScoreboardFactory().make(name, slot, objective, delay);
+    }
+
+    /**
+     * Makes a message packet, allowing you to send a title or tab packet
+     * message, if the header or footer is null or an empty string,
+     * they will be ignored when the packet is created and sent.
+     *
+     * @param header The header to send to the player
+     * @return Message
+     */
+    public Message makeMessage(String header)
+    {
+        if (!MessageManager.hasLibrary()) {
+            MessageManager.setLibrary(this);
+        }
+
+        Message message = new Message();
+
+        return message.setHeader(header);
+    }
+
+    /**
+     * Makes a message packet, allowing you to send a title or tab packet
+     * message, if the header or footer is null or an empty string,
+     * they will be ignored when the packet is created and sent.
+     *
+     * @param header The header to send.
+     * @param footer The footer to send.
+     * @return Message
+     */
+    public Message makeMessage(String header, String footer)
+    {
+        return makeMessage(header).setFooter(footer);
     }
 
     /**

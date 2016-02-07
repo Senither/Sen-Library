@@ -4,7 +4,6 @@ import com.senither.library.SenLibrary;
 import com.senither.library.config.Configuration;
 import com.senither.library.database.eloquent.DataRow;
 import com.senither.library.database.utils.QueryBuilder;
-import com.senither.library.inventory.InventoryBuilder;
 import com.senither.library.inventory.WallSide;
 import com.senither.library.scoreboard.ScoreboardHandler;
 import com.senither.library.scoreboard.ScoreboardPage;
@@ -48,11 +47,7 @@ public class TestPlugin extends JavaPlugin implements Listener
 
         Player player = (Player) sender;
 
-        ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
-
-        InventoryBuilder inventory = library.makeInventory(3, WallSide.ALL, item, "&8Filler item");
-
-        inventory.open(player);
+        library.makeInventory(3, WallSide.ALL, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15), "&8Filler item").open(player);
 
         return true;
     }
@@ -62,16 +57,24 @@ public class TestPlugin extends JavaPlugin implements Listener
     {
         Player player = e.getPlayer();
 
+        // Sends a title and tab message to the player
+        library.makeMessage("&6&lSenLibrary Dev Server", "&9I <3 127.0.0.1").sendTab(player);
+        library.makeMessage("&6Welcome back!", "Hi there &a{playerName}").sendTitle(player);
+
+        // Creates a dynamic scoreboard withscrolling text and assigns it to the player
         ScoreboardHandler scoreboard = library.makeScoreboard(player, 50);
-        scoreboard.addPage(new ScoreboardPage("&e&lSCOREBOARD  TESTS").setEntries(
-        /* >_> */Arrays.asList("&r", "&6Your Name:", "{playerName}", "&r&r", "&6Level", "{playerLevel}", "&r&r&r", "&6Scrolling text", "Your name is {playerName} and you're level {playerLevel}.")
-        ).setExtraDelay(150));
+        scoreboard.addPage(new ScoreboardPage("&e&lSCOREBOARD  TESTS").setEntries(Arrays.asList(
+        /* >_> */"&r", "&6Your Name:", "{playerName}",
+        /* >_> */ "&r&r", "&6Level", "{playerLevel}",
+        /* >_> */ "&r&r&r", "&6Scrolling text", "Your name is {playerName} and you're level {playerLevel}."
+        )).setExtraDelay(150));
 
-        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(
-        /* >_> */Arrays.asList("&r", "&6Food:", "{playerFood}", "&r&r", "&6Tealth", "{playerHealth}")
-        ).resetLastPage(true));
+        scoreboard.addPage(new ScoreboardPage("   &e&lSIMPLE STATS   ").setEntries(Arrays.asList(
+        /* >_> */"&r", "&6Food:", "{playerFood}",
+        /* >_> */ "&r&r", "&6Tealth", "{playerHealth}"
+        )).resetLastPage(true));
 
-        // - Database tests
+        // Quyeries the database twice using the same query, once from the eloquent user model, and once with the query builder.
         // Using the eloquent user model.
         for (DataRow row : new User().with("groups").select("users.name", "group.name as rank").get()) {
             player.sendMessage(row.getString("name") + "'s rank is: " + row.getString("rank"));
