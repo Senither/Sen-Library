@@ -766,11 +766,7 @@ public final class SenLibrary
      */
     public DatabaseFactory getDatabaseFactory()
     {
-        if (databaseFactory == null) {
-            databaseFactory = new DatabaseFactory(this);
-        }
-
-        return databaseFactory;
+        return (databaseFactory == null) ? databaseFactory = new DatabaseFactory(this) : databaseFactory;
     }
 
     /**
