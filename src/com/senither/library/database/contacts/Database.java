@@ -84,7 +84,7 @@ public abstract class Database implements DatabaseContract
     public final boolean close()
     {
         if (connection == null) {
-            library.warning("Database - Could not close connection, it is null.");
+            library.getLogger().warning("Database - Could not close connection, it is null.");
             return false;
         }
 
@@ -93,7 +93,7 @@ public abstract class Database implements DatabaseContract
 
             return true;
         } catch (SQLException e) {
-            library.warning("Database - Could not close connection, SQLException: {0}", e.getMessage());
+            library.getLogger().warning("Database - Could not close connection, SQLException: {0}", e.getMessage());
         }
 
         return false;
@@ -165,7 +165,7 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ResultSet query(String query) throws SQLException
     {
-        library.info("Database - The follow query has been added to the query queue: " + query);
+        library.getLogger().info("Database - The follow query has been added to the query queue: " + query);
 
         queryValidation(getStatement(query));
         Statement statement = getConnection().createStatement();
@@ -199,7 +199,7 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ResultSet query(PreparedStatement query, StatementContract statement) throws SQLException
     {
-        library.info("Database - The follow prepared statement has been added to the query queue: " + query);
+        library.getLogger().info("Database - The follow prepared statement has been added to the query queue: " + query);
 
         queryValidation(statement);
 
@@ -235,7 +235,7 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized PreparedStatement prepare(String query) throws SQLException
     {
-        library.info("Database - The follow query has been added to the prepared query queue: " + query);
+        library.getLogger().info("Database - The follow query has been added to the prepared query queue: " + query);
 
         StatementContract statement = getStatement(query);
         PreparedStatement ps = connection.prepareStatement(query);
@@ -255,7 +255,7 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ArrayList<Long> insert(String query) throws SQLException
     {
-        library.info("Database - The follow query has been added to the query inserter: " + query);
+        library.getLogger().info("Database - The follow query has been added to the query inserter: " + query);
 
         ArrayList<Long> keys = new ArrayList();
 
@@ -280,7 +280,7 @@ public abstract class Database implements DatabaseContract
      */
     public final synchronized ArrayList<Long> insert(PreparedStatement query) throws SQLException
     {
-        library.info("Database - The follow prepared statement has been added to the query inserter: " + query);
+        library.getLogger().info("Database - The follow prepared statement has been added to the query inserter: " + query);
 
         lastUpdate = query.executeUpdate();
         preparedStatements.remove(query);

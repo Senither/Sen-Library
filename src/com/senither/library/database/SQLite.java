@@ -44,7 +44,7 @@ public class SQLite extends FilenameDatabase
 
             return true;
         } catch (ClassNotFoundException e) {
-            library.error("Database - Class not found in initialize(): {0}", e);
+            library.getLogger().error("Database - Class not found in initialize(): {0}", e);
         }
 
         return false;
@@ -59,7 +59,7 @@ public class SQLite extends FilenameDatabase
 
                 return true;
             } catch (SQLException e) {
-                library.error("Database - Could not establish an SQLite connection, SQLException: {0}", e.getMessage());
+                library.getLogger().error("Database - Could not establish an SQLite connection, SQLException: {0}", e.getMessage());
 
                 return false;
             }
@@ -102,7 +102,7 @@ public class SQLite extends FilenameDatabase
 
             return false;
         } catch (SQLException e) {
-            library.error("Database - Could not check if table \"{0}\" exists, SQLException: {1}", table, e.getMessage());
+            library.getLogger().error("Database - Could not check if table \"{0}\" exists, SQLException: {1}", table, e.getMessage());
         }
 
         return false;
@@ -113,7 +113,7 @@ public class SQLite extends FilenameDatabase
     {
         try {
             if (!isTable(table)) {
-                library.error("Database - Table \"{0}\" does not exist.", table);
+                library.getLogger().error("Database - Table \"{0}\" does not exist.", table);
                 return false;
             }
 
@@ -124,7 +124,7 @@ public class SQLite extends FilenameDatabase
             return true;
         } catch (SQLException e) {
             if ((!e.getMessage().toLowerCase().contains("locking")) && (!e.getMessage().toLowerCase().contains("locked")) && (!e.toString().contains("not return ResultSet"))) {
-                library.error("Database - Error in wipeTable() query: {0}", e);
+                library.getLogger().error("Database - Error in wipeTable() query: {0}", e);
             }
         }
 

@@ -379,7 +379,7 @@ public class InventoryBuilder
      */
     public Inventory build()
     {
-        library.info("InventoryBuilder - Building inventory: " + toString());
+        library.getLogger().info("InventoryBuilder - Building inventory: " + toString());
 
         String inventoryTitle = library.getPlaceholder().format(title);
 
@@ -394,7 +394,7 @@ public class InventoryBuilder
      */
     public Inventory build(Player player)
     {
-        library.info("InventoryBuilder - Building inventory for " + player.getName() + ": " + toString());
+        library.getLogger().info("InventoryBuilder - Building inventory for " + player.getName() + ": " + toString());
 
         String inventoryTitle = library.getPlaceholder().format(title, player);
 

@@ -61,6 +61,8 @@ public class MessageManager implements MessageContract
     {
         this.formatProperties(player);
 
+        library.getLogger().info("MessageManager - Sending a title message packet to " + player.getName() + ": " + formatLoggerMessage());
+
         try {
             if (header.length() > 0) {
                 Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
@@ -105,6 +107,8 @@ public class MessageManager implements MessageContract
     public void sendTab(Player player)
     {
         this.formatProperties(player);
+
+        library.getLogger().info("MessageManager - Sending a tab message packet to " + player.getName() + ": " + formatLoggerMessage());
 
         try {
             Object tabHeader = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[]{
@@ -166,6 +170,11 @@ public class MessageManager implements MessageContract
         fadeOut = fadeOut < 1 ? 20 : fadeOut;
         fadeIn = fadeIn < 1 ? 20 : fadeIn;
         stay = stay < 1 ? 20 : stay;
+    }
+
+    private String formatLoggerMessage()
+    {
+        return String.format("[header=%s, footer=%s, fadeIn=%s, stay=%s, fadeOut=%s]", header, footer, fadeIn, stay, fadeOut);
     }
 
     /**

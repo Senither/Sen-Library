@@ -33,7 +33,7 @@ public class MySQL extends HostnameDatabase
 
             return true;
         } catch (ClassNotFoundException e) {
-            library.warning("Database - MySQL DataSource class missing: {0}", e.getMessage());
+            library.getLogger().warning("Database - MySQL DataSource class missing: {0}", e.getMessage());
         }
 
         return false;
@@ -52,7 +52,7 @@ public class MySQL extends HostnameDatabase
             }
 
         } catch (SQLException e) {
-            library.error("Database - Could not establish a MySQL connection, SQLException: {0}", e.getMessage());
+            library.getLogger().error("Database - Could not establish a MySQL connection, SQLException: {0}", e.getMessage());
         }
 
         return false;
@@ -63,13 +63,13 @@ public class MySQL extends HostnameDatabase
     {
         switch ((MySQLStatement) statement) {
             case USE:
-                library.warning("Database -Please create a new connection to use a different database.");
+                library.getLogger().warning("Database -Please create a new connection to use a different database.");
                 throw new SQLException("Please create a new connection to use a different database.");
 
             case PREPARE:
             case EXECUTE:
             case DEALLOCATE:
-                library.warning("Database - Please use the prepare() method to prepare a query.");
+                library.getLogger().warning("Database - Please use the prepare() method to prepare a query.");
                 throw new SQLException("Please use the prepare() method to prepare a query.");
         }
     }
@@ -94,7 +94,7 @@ public class MySQL extends HostnameDatabase
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            library.error("Database - Could not create a statement in checkTable(), SQLException: {0}", e.getMessage());
+            library.getLogger().error("Database - Could not create a statement in checkTable(), SQLException: {0}", e.getMessage());
 
             return false;
         }
@@ -114,7 +114,7 @@ public class MySQL extends HostnameDatabase
     {
         try {
             if (!isTable(table)) {
-                library.error("Database - Table \"{0}\" does not exist.", table);
+                library.getLogger().error("Database - Table \"{0}\" does not exist.", table);
 
                 return false;
             }
@@ -125,7 +125,7 @@ public class MySQL extends HostnameDatabase
 
             return true;
         } catch (SQLException e) {
-            library.error("Database - Could not wipe table, SQLException: {0}", e.getMessage());
+            library.getLogger().error("Database - Could not wipe table, SQLException: {0}", e.getMessage());
         }
 
         return false;

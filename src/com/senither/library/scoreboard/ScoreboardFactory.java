@@ -73,7 +73,7 @@ public class ScoreboardFactory implements Listener
         ScoreboardHandler scoreboard = new ScoreboardHandler(library, name, slot, objective, delay);
         scoreboards.put(name, scoreboard);
 
-        library.info("ScoreboardFactory - Building scoreboard: " + scoreboard);
+        library.getLogger().info("ScoreboardFactory - Building scoreboard: " + scoreboard);
 
         return scoreboard;
     }
@@ -91,7 +91,7 @@ public class ScoreboardFactory implements Listener
         if (scoreboards.containsKey(name)) {
             ScoreboardHandler scoreboard = scoreboards.remove(name);
 
-            library.info("ScoreboardFactory - Removing scoreboard: " + scoreboard);
+            library.getLogger().info("ScoreboardFactory - Removing scoreboard: " + scoreboard);
 
             scoreboard.stop();
             scoreboard.clear();
