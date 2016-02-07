@@ -74,7 +74,8 @@ public final class ScoreboardHandler implements Runnable
     private final HashMap<Integer, String> occupiedEntries;
 
     /**
-     *
+     * The current scoreboard page index that should
+     * be loaded and used to render the scoreboard.
      *
      * @var Integer
      */
@@ -109,6 +110,13 @@ public final class ScoreboardHandler implements Runnable
      * @var Integer
      */
     private int ticks = 0;
+
+    /**
+     * The minecraft tick rate at which the letters should be scrolling at.
+     *
+     * @var Integer
+     */
+    private int updateScroll = 4;
 
     /**
      * Creates a new scoreboard handler instance.
@@ -168,6 +176,17 @@ public final class ScoreboardHandler implements Runnable
     public int getDelay()
     {
         return delay;
+    }
+
+    /**
+     * Sets the minecraft tick rate at which the letters should be scrolling
+     * at, the lower the number the faster the text will be scrolling.
+     *
+     * @param updateScroll The rate to set.
+     */
+    public void setUpdateScroll(int updateScroll)
+    {
+        this.updateScroll = updateScroll;
     }
 
     /**
@@ -263,6 +282,10 @@ public final class ScoreboardHandler implements Runnable
      */
     public void clear()
     {
+        pages.stream().forEach((page) -> {
+            page.clearCache();
+        });
+
         pages.clear();
         listeners.clear();
         occupiedEntries.clear();
@@ -297,6 +320,10 @@ public final class ScoreboardHandler implements Runnable
     public void run()
     {
         if (ticks-- > 0) {
+            if (ticks % updateScroll == 0) {
+                update(false);
+            }
+
             return;
         }
 
@@ -308,36 +335,61 @@ public final class ScoreboardHandler implements Runnable
             index = 0;
         }
 
-        ScoreboardPage page = pages.get(index);
-        extra = page.getExtraDelay();
-        ticks = delay + extra;
+        update(true);
+    }
 
+    /**
+     * Updates the scoreboard with the pages loaded from the current
+     * set index, if the page cache isn't set, the page lines
+     * will be formatted and cached for later use.
+     *
+     * @param update Determines whether it should update the ticks counter or not.
+     */
+    private void update(boolean update)
+    {
+        ScoreboardPage page = pages.get(index);
         Objective obj = board.getObjective(slot);
 
+        if (!page.hasCache()) {
+            Player player = (listeners.isEmpty())
+            ? null : listeners.get(listeners.keySet().iterator().next());
+
+            page.createCache(library, player);
+
+            if (page.shouldResetLastPage()) {
+                for (String item : obj.getScoreboard().getEntries()) {
+                    obj.getScoreboard().resetScores(item);
+                }
+            }
+        }
+
         if (page.getTitle() != null) {
-            obj.setDisplayName(page.getTitle());
+            obj.setDisplayName(page.getTitle().next());
         }
 
         for (int i : page.getEntries().keySet()) {
-            if (occupiedEntries.containsKey(i) && !occupiedEntries.get(i).equals(page.getEntries().get(i))) {
+            String text = page.getEntries().get(i).next();
+
+            if (occupiedEntries.containsKey(i) && !occupiedEntries.get(i).equals(text)) {
                 board.resetScores(occupiedEntries.get(i));
                 occupiedEntries.remove(i);
             }
 
-            if (page.getEntries().get(i) == null) {
+            if (text == null) {
                 continue;
             }
 
-            String line = page.getEntries().get(i);
+            team.addEntry(text);
+            obj.getScore(text).setScore(i);
 
-            for (Player player : listeners.values()) {
-                line = library.getPlaceholder().format(line, player);
-            }
+            occupiedEntries.put(i, text);
+        }
 
-            team.addEntry(line);
-            obj.getScore(line).setScore(i);
+        if (update) {
+            extra = page.getExtraDelay();
+            ticks = delay + extra;
 
-            occupiedEntries.put(i, line);
+            page.clearCache();
         }
     }
 

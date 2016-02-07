@@ -1,8 +1,10 @@
 package com.senither.library.scoreboard;
 
+import com.senither.library.SenLibrary;
+import com.senither.library.utils.Scroller;
 import java.util.HashMap;
 import java.util.List;
-import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class ScoreboardPage
 {
@@ -12,7 +14,7 @@ public class ScoreboardPage
      *
      * @var String
      */
-    private String title = null;
+    private Scroller title = null;
 
     /**
      * A list of entries for the scoreboard to render, the key is the
@@ -20,7 +22,25 @@ public class ScoreboardPage
      *
      * @var HashMap
      */
-    private HashMap<Integer, String> entries = new HashMap<>();
+    private final HashMap<Integer, String> entries = new HashMap<>();
+
+    /**
+     * A list of cache entries for the scoreboard to render, the
+     * list will be generated from the entries map, but the
+     * strings will be converted to scroller objects,
+     * allowing scrolling text on the scoreboard.
+     *
+     * @var HashMap
+     */
+    private final HashMap<Integer, Scroller> cache = new HashMap<>();
+
+    /**
+     * Determines if we should reset the page before this page, making
+     * indexs that this page doesn't occupy, gets removed.
+     *
+     * @var Boolean
+     */
+    private boolean resetLastPage = false;
 
     /**
      * Represents the extra delay to add to the scoreboard update timer.
@@ -36,7 +56,7 @@ public class ScoreboardPage
      */
     public ScoreboardPage(String title)
     {
-        this.title = colorize(title);
+        this.title = new Scroller(title);
     }
 
     /**
@@ -46,7 +66,9 @@ public class ScoreboardPage
      */
     public ScoreboardPage(HashMap<Integer, String> entries)
     {
-        this.entries.putAll(colorize(entries));
+        entries.keySet().stream().forEach((index) -> {
+            this.entries.put(index, entries.get(index));
+        });
     }
 
     /**
@@ -57,8 +79,35 @@ public class ScoreboardPage
      */
     public ScoreboardPage(String title, HashMap<Integer, String> entries)
     {
-        this.title = colorize(title);
-        this.entries.putAll(colorize(entries));
+        this.title = new Scroller(title);
+        entries.keySet().stream().forEach((index) -> {
+            this.entries.put(index, entries.get(index));
+        });
+    }
+
+    /**
+     * Sets the resetLastPage boolean, resetting the
+     * last page before writing to the scoreboard.
+     *
+     * @param resetLastPage Determines if we should reset the last page or not.
+     * @return ScoreboardPage
+     */
+    public ScoreboardPage resetLastPage(boolean resetLastPage)
+    {
+        this.resetLastPage = resetLastPage;
+
+        return this;
+    }
+
+    /**
+     * Determines if we should reset the page before this page, making
+     * indexs that this page doesn't occupy, gets removed.
+     *
+     * @return Boolean
+     */
+    public boolean shouldResetLastPage()
+    {
+        return resetLastPage;
     }
 
     /**
@@ -70,7 +119,7 @@ public class ScoreboardPage
      */
     public ScoreboardPage setEntry(int index, String message)
     {
-        entries.put(index, colorize(message));
+        entries.put(index, message);
 
         return this;
     }
@@ -86,7 +135,7 @@ public class ScoreboardPage
     {
         int size = entries.size();
         for (String entry : entries) {
-            this.entries.put(size--, colorize(entry));
+            this.entries.put(size--, entry);
         }
 
         return this;
@@ -100,7 +149,9 @@ public class ScoreboardPage
      */
     public ScoreboardPage setEntries(HashMap<Integer, String> entries)
     {
-        this.entries = colorize(entries);
+        entries.keySet().stream().forEach((index) -> {
+            this.entries.put(index, entries.get(index));
+        });
 
         return this;
     }
@@ -110,9 +161,43 @@ public class ScoreboardPage
      *
      * @return HashMap
      */
-    public HashMap<Integer, String> getEntries()
+    public HashMap<Integer, Scroller> getEntries()
     {
-        return entries;
+        return cache;
+    }
+
+    /**
+     * Clears the entries cache.
+     */
+    public void clearCache()
+    {
+        cache.clear();
+    }
+
+    /**
+     * Checks to see if the cache is empty.
+     *
+     * @return Boolean
+     */
+    public boolean hasCache()
+    {
+        return !cache.isEmpty();
+    }
+
+    /**
+     * Creates the entries cache, allowing the
+     * page to be rendered on the scoreboard.
+     *
+     * @param library The sen-library instance.
+     * @param player  The player to use to format player placeholders.
+     */
+    public void createCache(SenLibrary library, Player player)
+    {
+        this.clearCache();
+
+        entries.keySet().stream().forEach((index) -> {
+            cache.put(index, new Scroller(library.getPlaceholder().format(entries.get(index), player)));
+        });
     }
 
     /**
@@ -123,7 +208,7 @@ public class ScoreboardPage
      */
     public ScoreboardPage setTitle(String title)
     {
-        this.title = colorize(title);
+        this.title = new Scroller(title);
 
         return this;
     }
@@ -131,9 +216,9 @@ public class ScoreboardPage
     /**
      * Returns the scoreboard page title.
      *
-     * @return String
+     * @return Scroller
      */
-    public String getTitle()
+    public Scroller getTitle()
     {
         return title;
     }
@@ -159,35 +244,5 @@ public class ScoreboardPage
     public int getExtraDelay()
     {
         return extraDelay;
-    }
-
-    /**
-     * Colorize a message, using Bukkit/Spigots standard and(&) symbol syntax.
-     *
-     * @param str The message the colorize.
-     * @return String
-     */
-    private String colorize(String str)
-    {
-        if (str == null) {
-            return null;
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', str);
-    }
-
-    /**
-     * Colorize a map of messages, using Bukkit/Spigots and(&) standard symbol syntax.
-     *
-     * @param arr The map of messages to colorize.
-     * @return HashMap
-     */
-    private HashMap<Integer, String> colorize(HashMap<Integer, String> arr)
-    {
-        arr.keySet().stream().forEach((index) -> {
-            arr.put(index, colorize(arr.get(index)));
-        });
-
-        return arr;
     }
 }
