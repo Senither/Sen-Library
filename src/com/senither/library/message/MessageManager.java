@@ -76,7 +76,9 @@ public class MessageManager implements MessageContract
                     getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE}
                 );
 
-                Object titlePacket = titleConstructor.newInstance(new Object[]{enumTitle, chatTitle, fadeIn, stay, fadeOut});
+                Object titlePacket = titleConstructor.newInstance(new Object[]{
+                    enumTitle, chatTitle, fadeIn, stay, fadeOut
+                });
 
                 sendPacket(player, titlePacket);
             }

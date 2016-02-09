@@ -3,9 +3,11 @@ package com.senither.library.message;
 public class Message extends MessageManager
 {
 
-    public void setType(MessageType type)
+    public Message setType(MessageType type)
     {
         this.type = type;
+
+        return this;
     }
 
     public MessageType getType()

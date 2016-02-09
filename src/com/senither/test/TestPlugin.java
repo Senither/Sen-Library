@@ -5,6 +5,7 @@ import com.senither.library.config.Configuration;
 import com.senither.library.database.eloquent.DataRow;
 import com.senither.library.database.utils.QueryBuilder;
 import com.senither.library.inventory.WallSide;
+import com.senither.library.message.MessageType;
 import com.senither.library.scoreboard.ScoreboardHandler;
 import com.senither.library.scoreboard.ScoreboardPage;
 import java.util.Arrays;
@@ -58,8 +59,8 @@ public class TestPlugin extends JavaPlugin implements Listener
         Player player = e.getPlayer();
 
         // Sends a title and tab message to the player
-        library.makeMessage("&6&lSenLibrary Dev Server", "&9I <3 127.0.0.1").sendTab(player);
-        library.makeMessage("&6Welcome back!", "Hi there &a{playerName}").sendTitle(player);
+        library.makeMessage("&6&lSenLibrary Dev Server", "&9I <3 127.0.0.1", MessageType.TAB).send(player);
+        library.makeMessage("&6Welcome back!", "Hi there &a{playerName}", MessageType.TITLE).send(player);
 
         // Creates a dynamic scoreboard withscrolling text and assigns it to the player
         ScoreboardHandler scoreboard = library.makeScoreboard(player, 50);

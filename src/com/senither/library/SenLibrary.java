@@ -11,6 +11,7 @@ import com.senither.library.inventory.WallSide;
 import com.senither.library.item.ItemParser;
 import com.senither.library.message.Message;
 import com.senither.library.message.MessageManager;
+import com.senither.library.message.MessageType;
 import com.senither.library.placeholder.PlaceholderRepository;
 import com.senither.library.placeholder.contracts.PlayerPlaceholder;
 import com.senither.library.scoreboard.ScoreboardFactory;
@@ -565,18 +566,26 @@ public final class SenLibrary
      * message, if the header or footer is null or an empty string,
      * they will be ignored when the packet is created and sent.
      *
-     * @param header The header to send to the player
+     * @param header The header to send to the player.
      * @return Message
      */
     public Message makeMessage(String header)
     {
-        if (!MessageManager.hasLibrary()) {
-            MessageManager.setLibrary(this);
-        }
+        return makeMessage(header, null, MessageType.TITLE);
+    }
 
-        Message message = new Message();
-
-        return message.setHeader(header);
+    /**
+     * Makes a message packet, allowing you to send a title or tab packet
+     * message, if the header or footer is null or an empty string,
+     * they will be ignored when the packet is created and sent.
+     *
+     * @param header The header to send to the player.
+     * @param type   The type of message to send.
+     * @return Message
+     */
+    public Message makeMessage(String header, MessageType type)
+    {
+        return makeMessage(header, null, type);
     }
 
     /**
@@ -590,7 +599,72 @@ public final class SenLibrary
      */
     public Message makeMessage(String header, String footer)
     {
-        return makeMessage(header).setFooter(footer);
+        return makeMessage(header, footer, MessageType.TITLE);
+    }
+
+    /**
+     * Makes a message packet, allowing you to send a title or tab packet
+     * message, if the header or footer is null or an empty string,
+     * they will be ignored when the packet is created and sent.
+     *
+     * @param header The header to send to the player.
+     * @param footer The footer to send.
+     * @param type   The type of message to send.
+     * @return Message
+     */
+    public Message makeMessage(String header, String footer, MessageType type)
+    {
+        if (!MessageManager.hasLibrary()) {
+            MessageManager.setLibrary(this);
+        }
+
+        Message message = new Message();
+
+        return message.setType(type).setHeader(header).setFooter(footer);
+    }
+
+    /**
+     * Makes a message packet, allowing you to send a title or tab packet
+     * message, if the header or footer is null or an empty string,
+     * they will be ignored when the packet is created and sent.
+     *
+     * The animation values will be set in the following order:
+     * - 1: fadeIn
+     * - 2: stay
+     * - 3: fadeOut
+     *
+     * @param header     The header to send to the player.
+     * @param footer     The footer to send.
+     * @param type       The type of message to send.
+     * @param animations The animation values.
+     * @return Message
+     */
+    public Message makeMessage(String header, String footer, MessageType type, int... animations)
+    {
+        if (!MessageManager.hasLibrary()) {
+            MessageManager.setLibrary(this);
+        }
+
+        Message message = new Message();
+
+        int index = 1;
+        for (int value : animations) {
+            switch (index++) {
+                case 1:
+                    message.setFadeIn(value);
+                    break;
+
+                case 2:
+                    message.setStay(value);
+                    break;
+
+                case 3:
+                    message.setFadeOut(value);
+                    break;
+            }
+        }
+
+        return message.setType(type).setHeader(header).setFooter(footer);
     }
 
     /**
