@@ -1,6 +1,6 @@
 SenLibrary
 ==========
 
-Sen Library is a Bukkit/Spigot server library, allowing you to do everything you were already doing, just a lot simpler!
+Sen Library is a Bukkit/Spigot server library I wrote back in late 2015 and early 2016 to help me make Minecraft plugins easier, the project was originally hosted on BitBucket at [bitbucket.org/Senither/senlibrary](https://bitbucket.org/Senither/senlibrary)
 
-More to come..
+The project can be run like a normal Minecraft plugin, or be included into other projects, the library source code can be found in `src/com/senither/library`. 
